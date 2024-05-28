@@ -1,1 +1,5 @@
-idlist = [22,23,24,26,110,130,157,158,159,160,161,243]
+from customtkinter import *
+
+app = CTk()
+app.geometry("600x400")
+app.mainloop()

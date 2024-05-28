@@ -1,0 +1,4 @@
+add https://www.flaticon.com/authors/torskaya to credits
+https://www.flaticon.com/authors/sonnycandra
+Place the attribution on the app's credits page and on the description page on the app store.
+
