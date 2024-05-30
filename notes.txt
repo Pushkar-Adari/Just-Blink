@@ -2,3 +2,12 @@ add https://www.flaticon.com/authors/torskaya to credits
 https://www.flaticon.com/authors/sonnycandra
 Place the attribution on the app's credits page and on the description page on the app store.
 
+
+C:\Users\pushk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\site-packages\QtDesigner
+
+
+
+0 ---- 32[] 154[] 518.37
+
+106 10min 5px break
+530 50min
