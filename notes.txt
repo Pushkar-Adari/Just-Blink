@@ -5,7 +5,7 @@ Place the attribution on the app's credits page and on the description page on t
 
 C:\Users\pushk\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\site-packages\QtDesigner
 
-
+https://unsplash.com/photos/a-dark-background-with-a-blue-and-purple-swirl--8FjVl5OXfA
 
 0 ---- 32[] 154[] 518.37
 
