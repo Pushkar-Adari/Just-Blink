@@ -153,6 +153,8 @@ class Ui_Home(object):
 "icon-size:20px;")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/newPrefix/assets/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/newPrefix/assets/pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+
         self.Pause.setIcon(icon2)
         self.Pause.setCheckable(True)
         self.Pause.setChecked(False)
