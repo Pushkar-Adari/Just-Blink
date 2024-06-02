@@ -6,4 +6,4 @@
 
 • It allows the user to easily create and switch profiles.
 
-• It also has a built in pomodoro timer to encourage you to take breaks, which increases both productivity and to your eye a rest.
+• It also has a built in pomodoro timer to encourage you to take breaks, which increases both productivity and to give your eyes a rest.
