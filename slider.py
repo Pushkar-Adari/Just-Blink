@@ -20,7 +20,7 @@ def main():
 
     # Create progress bar
     progressBar = QProgressBar()
-    progressBar.setFixedSize(530, 43)
+    progressBar.setFixedSize(106, 43)
     progressBar.setStyleSheet("""
         QProgressBar {
             border-radius: 21px;
