@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QProgressBar, QPushButton
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QProgressBar, QPushButton, QLabel
 from PyQt5.QtGui import QBitmap, QPainter
 from PyQt5.QtCore import QTimer, Qt
 
@@ -62,22 +63,26 @@ class MainWindow(QMainWindow):
         p.end()
         self.progressBar.setMask(bm)
 
+        # Adding the label for "TIMER"
+        self.timer_label = QLabel("TIMER", self.centralWidget)
+        self.timer_label.setStyleSheet("color: white;")
+        self.timer_label.setGeometry(QtCore.QRect(60, 280, 530, 43))
+        self.timer_label.setAlignment(Qt.AlignCenter)
+
         self.layout.addStretch()
         self.layout.addWidget(self.progressBar, 0, Qt.AlignCenter)
         self.layout.addStretch()
-
+        self.timer_label.raise_()
         self.centralWidget.setLayout(self.layout)
         self.setCentralWidget(self.centralWidget)
 
-    def toggle_timer(self,checked):
+    def toggle_timer(self, checked):
         if checked:
             self.btn.setText("Stop")
             self.timer.start()
         else:
             self.btn.setText("Start")
-
             self.timer.stop()
-
 
     def update_progress(self):
         self.remaining_time -= 1

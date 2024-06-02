@@ -5,8 +5,8 @@ from PyQt5.QtCore import Qt, QRect, QTimer
 class Ui_Home(object):
     def setupUi(self, Home):
         #///////// VALUES ///////
-        self.min50total = 10
-        self.min10total = 10
+        self.min50total = 3000
+        self.min10total = 600
         self.min10actual = self.min10total
         self.min50actual = self.min50total
 
@@ -222,7 +222,20 @@ class Ui_Home(object):
         p.drawRoundedRect(QRect(0, 0, bm.width(), bm.height()), radius, radius)
         p.end()
         self.min10.setMask(bm)
-
+        self.min10label = QtWidgets.QLabel(self.Central)
+        self.min10label.setGeometry(QtCore.QRect(32, 498, 106, 43))
+        font = QtGui.QFont()
+        font.setFamily("Poppins ExtraLight")
+        font.setPointSize(9)
+        font.setItalic(False)
+        self.min10label.setFont(font)
+        self.min10label.setStyleSheet(
+            "QLabel{\n"
+            "color:white;\n"
+            "}"
+        )
+        self.min10label.setText("10m00s")
+        self.min10label.setAlignment(Qt.AlignCenter)
         self.min50 = QtWidgets.QProgressBar(self.Central)
         self.min50.setGeometry(QtCore.QRect(143, 498, 530, 43))
         self.min50.setStyleSheet("QProgressBar{\n"
@@ -249,6 +262,21 @@ class Ui_Home(object):
         p.end()
         self.min50.setMask(bm)
 
+        self.min50label = QtWidgets.QLabel(self.Central)
+        self.min50label.setGeometry(QtCore.QRect(143, 498, 530, 43))
+        font = QtGui.QFont()
+        font.setFamily("Poppins ExtraLight")
+        font.setPointSize(9)
+        font.setItalic(False)
+        self.min50label.setFont(font)
+        self.min50label.setStyleSheet(
+            "QLabel{\n"
+            "color:white;\n"
+            "}"
+        )
+        self.min50label.setText("50m00s")
+        self.min50label.setAlignment(Qt.AlignCenter)
+
         self.Background.raise_()
         self.Name.raise_()
         self.StartStop.raise_()
@@ -263,6 +291,9 @@ class Ui_Home(object):
         self.Profile.raise_()
         self.min10.raise_()
         self.min50.raise_()
+        self.min10label.raise_()
+        self.min50label.raise_()
+
         Home.setCentralWidget(self.Central)
 
         self.retranslateUi(Home)
