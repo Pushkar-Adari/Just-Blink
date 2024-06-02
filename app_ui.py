@@ -150,55 +150,6 @@ class Ui_Home(object):
         icon3.addPixmap(QtGui.QPixmap(":/newPrefix/assets/reset.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Reset.setIcon(icon3)
         self.Reset.setObjectName("Reset")
-        self.min50 = QtWidgets.QSlider(self.Central)
-        self.min50.setGeometry(QtCore.QRect(143, 498, 530, 43))
-        self.min50.setStyleSheet("QSlider::groove:horizontal{\n"
-"height:43px;\n"
-"    background-color: rgba(45, 45, 45, 175);\n"
-"border-radius:21px\n"
-"}\n"
-"QSlider::handle:horizontal{\n"
-"    background: rgba(0, 0, 0, 0);\n"
-"}\n"
-"QSlider::add-page:horizontal{\n"
-"height:43px;\n"
-"    background:rgba(45,45,45,0.5);\n"
-"border-radius:21px\n"
-"}\n"
-"QSlider::sub-page:horizontal{\n"
-"height:43px;\n"
-"    background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(50,51,113,255),stop:1 rgba(2,19,51,255));\n"
-"border-radius:21px;\n"
-"margin-left:0px;\n"
-"padding-left:21px;\n"
-"}")
-        self.min50.setOrientation(QtCore.Qt.Horizontal)
-        self.min50.setObjectName("min50")
-        self.min10 = QtWidgets.QSlider(self.Central)
-        self.min10.setGeometry(QtCore.QRect(32, 498, 106, 43))
-        self.min10.setStyleSheet("QSlider::groove:horizontal{\n"
-"height:43px;\n"
-"    background-color: rgba(45, 45, 45, 175);\n"
-"border-radius:21px\n"
-"}\n"
-"QSlider::handle:horizontal{\n"
-"    background: rgba(255, 255, 255, 0);\n"
-"}\n"
-"QSlider::add-page:horizontal{\n"
-"height:43px;\n"
-"    background:rgba(45,45,45,0.5);\n"
-"border-radius:21px\n"
-"}\n"
-"QSlider::sub-page:horizontal{\n"
-"height:43px;\n"
-"    background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(52,30,63,255),stop:1 rgba(134,89,157,255));\n"
-"border-radius:21px;\n"
-"\n"
-"margin-left:0px;\n"
-"padding-left:21px;\n"
-"}")
-        self.min10.setOrientation(QtCore.Qt.Horizontal)
-        self.min10.setObjectName("min10")
         self.Name = QtWidgets.QFrame(self.Central)
         self.Name.setGeometry(QtCore.QRect(586, 38, 119, 32))
         self.Name.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
@@ -264,7 +215,6 @@ class Ui_Home(object):
         p.end()
         self.min50_2.setMask(bm)
 
-        self.min50.raise_()
         self.Background.raise_()
         self.Name.raise_()
         self.StartStop.raise_()
@@ -276,7 +226,6 @@ class Ui_Home(object):
         self.TimerLabel.raise_()
         self.Pause.raise_()
         self.Reset.raise_()
-        self.min10.raise_()
         self.Profile.raise_()
         self.min10_2.raise_()
         self.min50_2.raise_()
