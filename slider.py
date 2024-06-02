@@ -6,7 +6,7 @@ from PyQt5.QtCore import QTimer, Qt
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.total_time = 120  # total countdown time in seconds
+        self.total_time = 30  # total countdown time in seconds
         self.remaining_time = self.total_time
 
         self.setFixedSize(800, 600)
@@ -37,8 +37,14 @@ class MainWindow(QMainWindow):
         """)
 
         self.btn = QPushButton("Start", self)
+        self.btn.setCheckable(True)
+
         self.btn.move(350, 200)
-        self.btn.clicked.connect(self.start)
+        self.btn.toggled.connect(self.toggle_timer)
+
+        self.resetBtn = QPushButton("Reset", self)
+        self.resetBtn.move(500,200)
+        self.resetBtn.clicked.connect(self.reset_timer)
 
         self.timer = QTimer()
         self.timer.setInterval(1000)  # 1000 ms = 1 second
@@ -63,15 +69,25 @@ class MainWindow(QMainWindow):
         self.centralWidget.setLayout(self.layout)
         self.setCentralWidget(self.centralWidget)
 
-    def start(self):
-        self.timer.start()
+    def toggle_timer(self,checked):
+        if checked:
+            self.btn.setText("Stop")
+            self.timer.start()
+        else:
+            self.btn.setText("Start")
+
+            self.timer.stop()
+
 
     def update_progress(self):
         self.remaining_time -= 1
         self.progressBar.setValue(self.remaining_time)
 
-        if self.remaining_time <= 0:
-            self.timer.stop()
+    def reset_timer(self):
+        self.timer.stop()
+        self.remaining_time = self.total_time
+        self.progressBar.setValue(self.total_time)
+
 
 def main():
     app = QApplication(sys.argv)

@@ -1,10 +1,15 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QBitmap, QPainter, QIcon
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt, QRect, QTimer
 
 class Ui_Home(object):
     def setupUi(self, Home):
-        
+        #///////// VALUES ///////
+        self.min50total = 10
+        self.min10total = 10
+        self.min10actual = self.min10total
+        self.min50actual = self.min50total
+
         #///////// HOME /////////
 
         Home.setObjectName("Home")
@@ -159,6 +164,11 @@ class Ui_Home(object):
         self.Pause.setCheckable(True)
         self.Pause.setChecked(False)
         self.Pause.setObjectName("Pause")
+        self.Pause.toggled.connect(self.toggle_timer)
+
+        self.timer = QTimer()
+        self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.update_progress)
         self.Reset = QtWidgets.QToolButton(self.Central)
         self.Reset.setGeometry(QtCore.QRect(726, 498, 43, 43))
         self.Reset.setStyleSheet("background-color: rgb(19, 19, 19);\n"
@@ -168,6 +178,7 @@ class Ui_Home(object):
         icon3.addPixmap(QtGui.QPixmap(":/newPrefix/assets/reset.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Reset.setIcon(icon3)
         self.Reset.setObjectName("Reset")
+        self.Reset.clicked.connect(self.reset_timer)
         self.Name = QtWidgets.QFrame(self.Central)
         self.Name.setGeometry(QtCore.QRect(586, 38, 119, 32))
         self.Name.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
@@ -190,13 +201,14 @@ class Ui_Home(object):
 "background-color:rgba(45,45,45,0.5);\n"
 "border-radius:21px;\n"
 "text-align:center;\n"
-"color:white;\n"
+"color:transparent;\n"
 "}\n"
 "QProgressBar::chunk{\n"
 "background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(52,30,63,255),stop:1 rgba(134,89,157,255));\n"
 "border-radius:21px;\n"
 "}")
-        self.min10.setProperty("value", 0)
+        self.min10.setRange(0,self.min10total)
+        self.min10.setValue(self.min10actual)
         self.min10.setObjectName("min10")
         bm = QBitmap(self.min10.size())
         bm.fill(Qt.color0)
@@ -208,19 +220,23 @@ class Ui_Home(object):
         p.drawRoundedRect(QRect(0,0,bm.width(),bm.height()),radius,radius)
         p.end()
         self.min10.setMask(bm)
+
+        # 50 min timer
+
         self.min50 = QtWidgets.QProgressBar(self.Central)
         self.min50.setGeometry(QtCore.QRect(143, 498, 530, 43))
         self.min50.setStyleSheet("QProgressBar{\n"
 "background-color:rgba(45,45,45,0.5);\n"
 "border-radius:21px;\n"
 "text-align:center;\n"
-"color:white;\n"
+"color:transparent;\n"
 "}\n"
 "QProgressBar::chunk{\n"
 "background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(50,51,113,255),stop:1 rgba(2,19,51,255));\n"
 "border-radius:21px;\n"
 "}")
-        self.min50.setProperty("value", 5)
+        self.min50.setRange(0, self.min50total)
+        self.min50.setValue(self.min50total)
         self.min50.setObjectName("min50")
         bm = QBitmap(self.min50.size())
         bm.fill(Qt.color0)
@@ -269,4 +285,32 @@ class Ui_Home(object):
             self.Pause.setIcon(QIcon(":/newPrefix/assets/pause.png"))
         else:
             self.Pause.setIcon(QIcon(":/newPrefix/assets/play.png"))
+    def toggle_timer(self,checked):
+        if checked:
+            self.timer.start()
+            self.Pause.setIcon(QIcon(":/newPrefix/assets/pause.png"))
+        else:
+            self.timer.stop()
+            self.Pause.setIcon(QIcon(":/newPrefix/assets/play.png"))
+    def update_progress(self):
+        self.min50actual -= 1
+        self.min50.setValue(self.min50actual)
+        if self.min50actual <= 0:
+            self.update_restProgress()
+    def update_restProgress(self):
+        self.min10actual -= 1
+        self.min10.setValue(self.min10actual)
+        if self.min10actual <= 0:
+           #self.Pause.setChecked(False)
+           self.reset_timer()
+    def reset_timer(self):
+        #maybe add a loop to pass values to the bars so it "fills up" gradually
+        self.timer.stop()
+        self.min50actual = self.min50total
+        self.min50.setValue(self.min50actual)
+        self.min10actual = self.min10total
+        self.min10.setValue(self.min10actual)
+        self.Pause.setChecked(False)
+
+
 import rc_rc
