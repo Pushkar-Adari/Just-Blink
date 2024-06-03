@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QWidget, QHBoxLayout
 
 class CustomTitleBar(QWidget):
@@ -31,11 +31,17 @@ class CustomTitleBar(QWidget):
     def closeWindow(self):
         self.window().close()
 
+    def mousePressEvent(self, event):
+        self.offset = event.pos()
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == Qt.LeftButton:
+            self.window().move(event.globalPos() - self.offset)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setFixedSize(800, 600)
-        
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         self.centralWidget = QWidget()

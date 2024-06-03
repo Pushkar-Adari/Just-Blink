@@ -17,6 +17,7 @@ class Ui_Home(object):
         Home.setFixedSize(800, 600)
         Home.setAutoFillBackground(False)
         Home.setStyleSheet("")
+        Home.setAttribute(Qt.WA_TranslucentBackground, True)
         self.Central = QtWidgets.QWidget(Home)
         self.Central.setStyleSheet("")
         self.Central.setObjectName("Central")
@@ -29,7 +30,7 @@ class Ui_Home(object):
 
         self.TitleBar = QtWidgets.QFrame(self.Central)
         self.TitleBar.setFixedHeight(30)
-        self.TitleBar.setStyleSheet("background-color: rgba(1, 1, 1, 1);")
+        self.TitleBar.setStyleSheet("background-color: rgba(1, 1, 1, 1);border-top-left-radius: 20px; border-top-right-radius: 20px;")
         self.TitleBar.setObjectName("TitleBar")
         self.layout.addWidget(self.TitleBar)
 
@@ -446,4 +447,9 @@ class Ui_Home(object):
         self.MainContent.window().showMinimized()
     def closeWindow(self):
         self.MainContent.window().close()
+    def mousePressEvent(self,event):
+        self.offset = event.pos()
+    #def mouseMoveEvent(self,event):
+        #if event.buttons() == Qt.LeftButton:
+            #self.MainContent.window().move(event.globalPos()-self.offset)
 import rc_rc
