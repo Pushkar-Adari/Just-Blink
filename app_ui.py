@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QBitmap, QPainter, QIcon
+from PyQt5.QtGui import QBitmap, QPainter, QIcon, QCursor
 from PyQt5.QtCore import Qt, QRect, QTimer, QPoint, pyqtSignal
 
 class Ui_Home(object):
@@ -16,7 +16,7 @@ class Ui_Home(object):
         #///////// HOME /////////
 
         Home.setObjectName("Home")
-        Home.setFixedSize(800, 600)
+        Home.setFixedSize(800, 605)
         Home.setAutoFillBackground(False)
         Home.setStyleSheet("")
         Home.setAttribute(Qt.WA_TranslucentBackground, True)
@@ -30,8 +30,8 @@ class Ui_Home(object):
         #///////// CUSTOM TITLE BAR /////////
 
         self.TitleBar = QtWidgets.QFrame(self.Central)
-        self.TitleBar.setFixedHeight(30)
-        self.TitleBar.setStyleSheet("background-color: rgba(1, 1, 1, 1);border-top-left-radius: 20px; border-top-right-radius: 20px;")
+        self.TitleBar.setFixedHeight(36)
+        self.TitleBar.setStyleSheet("QFrame{background-color: rgba(1, 1, 1, 1);border-bottom:1px solid #4C4C4C; border-top-left-radius: 20px; border-top-right-radius: 20px;}")
         self.TitleBar.setObjectName("TitleBar")
         self.TitleBar.mousePressEvent = self.mousePressEvent
         self.TitleBar.mouseMoveEvent = self.mouseMoveEvent
@@ -39,7 +39,7 @@ class Ui_Home(object):
         self.layout.addWidget(self.TitleBar)
 
         self.closeApp = QtWidgets.QPushButton(self.TitleBar)
-        self.closeApp.setGeometry(QtCore.QRect(762, 5, 20, 20))
+        self.closeApp.setGeometry(QtCore.QRect(771, 7, 22, 22))
         self.closeApp.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);\n"
         "border-radius:10px;\n"
         "icon-size:12px;\n"
@@ -53,9 +53,9 @@ class Ui_Home(object):
 
         self.closeApp.setObjectName("closeApp")
         self.closeApp.clicked.connect(self.closeWindow)
-
+        self.closeApp.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.minApp = QtWidgets.QPushButton(self.TitleBar)
-        self.minApp.setGeometry(QtCore.QRect(729, 5, 20, 20))
+        self.minApp.setGeometry(QtCore.QRect(742, 7, 22, 22))
         self.minApp.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);\n"
         "border-radius:10px;\n"
         "icon-size:12px;\n"
@@ -68,9 +68,9 @@ class Ui_Home(object):
         "")
         self.minApp.setObjectName("minApp")
         self.minApp.clicked.connect(self.minimize_window)
-
+        self.minApp.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.titlelabel = QtWidgets.QLabel(self.TitleBar)
-        self.titlelabel.setGeometry(QtCore.QRect(321, 0, 159, 31))
+        self.titlelabel.setGeometry(QtCore.QRect(321, 0, 159, 36))
         font = QtGui.QFont()
         font.setFamily("Poppins")
         font.setPointSize(10)
@@ -114,7 +114,7 @@ class Ui_Home(object):
         self.StartStop.setCheckable(True)
         self.StartStop.setChecked(False)
         self.StartStop.setObjectName("StartStop")
-
+        self.StartStop.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         #///////// LOGO /////////
 
         self.Logo = QtWidgets.QLabel(self.MainContent)
@@ -133,7 +133,7 @@ class Ui_Home(object):
         #///////// PROFILE /////////
 
         self.Profile = QtWidgets.QToolButton(self.MainContent)
-        self.Profile.setGeometry(QtCore.QRect(663, 33, 43, 43))
+        self.Profile.setGeometry(QtCore.QRect(677, 33, 43, 43))
         self.Profile.setStyleSheet("background-color: rgb(19, 19, 19);\n"
                                    "border-radius:21px;\n"
                                    "icon-size:25px;")
@@ -141,19 +141,19 @@ class Ui_Home(object):
         icon.addPixmap(QtGui.QPixmap(":/newPrefix/assets/user.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Profile.setIcon(icon)
         self.Profile.setObjectName("Profile")
-
+        self.Profile.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         #///////// SETTINGS /////////
 
         self.Setting = QtWidgets.QToolButton(self.MainContent)
-        self.Setting.setGeometry(QtCore.QRect(718, 33, 43, 43))
+        self.Setting.setGeometry(QtCore.QRect(726, 33, 44, 44))
         self.Setting.setStyleSheet("background-color: rgb(19, 19, 19);\n"
-                                   "border-radius:21px;\n"
+                                   "border-radius:22px;\n"
                                    "icon-size:25px;")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/newPrefix/assets/setting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.Setting.setIcon(icon1)
         self.Setting.setObjectName("Setting")
-
+        self.Setting.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         #///////// AVERAGE /////////
 
         self.Avg = QtWidgets.QFrame(self.MainContent)
@@ -238,6 +238,7 @@ class Ui_Home(object):
         self.Pause.setCheckable(True)
         self.Pause.setChecked(False)
         self.Pause.setObjectName("Pause")
+        self.Pause.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.Pause.toggled.connect(self.toggle_timer)
 
         self.Reset = QtWidgets.QToolButton(self.MainContent)
@@ -250,7 +251,7 @@ class Ui_Home(object):
         self.Reset.setIcon(icon3)
         self.Reset.setObjectName("Reset")
         self.Reset.clicked.connect(self.reset_timer)
-
+        self.Reset.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.Name = QtWidgets.QFrame(self.MainContent)
         self.Name.setGeometry(QtCore.QRect(586, 38, 119, 32))
         self.Name.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
@@ -261,10 +262,10 @@ class Ui_Home(object):
         self.Name.setObjectName("Name")
 
         self.Background = QtWidgets.QFrame(self.MainContent)
-        self.Background.setGeometry(QtCore.QRect(0, 0, 800, 600))
+        self.Background.setGeometry(QtCore.QRect(0, 0, 800, 569))
         self.Background.setStyleSheet("border-image: url(:/newPrefix/b2.png) 0 0 0 0 stretch stretch;\n"
                                       "border-width: 0px;\n"
-                                      "")
+                                      "border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;")
         self.Background.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Background.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Background.setObjectName("Background")

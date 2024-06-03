@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setFixedSize(800, 600)
+        self.setFixedSize(800, 605)
         self.dragPos = QPoint()
 
         self.ui_wrapper = Ui_HomeWrapper(self)

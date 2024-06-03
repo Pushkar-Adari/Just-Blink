@@ -6,10 +6,10 @@
         <file>assets/setting.png</file>
         <file>assets/user.png</file>
         <file>b1.png</file>
-        <file>b2.png</file>
         <file>assets/down.png</file>
         <file>assets/up.png</file>
         <file>assets/close.png</file>
         <file>assets/min.png</file>
+        <file>b2.png</file>
     </qresource>
 </RCC>
