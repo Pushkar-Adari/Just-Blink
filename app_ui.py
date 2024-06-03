@@ -1,3 +1,4 @@
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QBitmap, QPainter, QIcon
 from PyQt5.QtCore import Qt, QRect, QTimer
@@ -46,7 +47,7 @@ class Ui_Home(object):
         "")
 
         self.closeApp.setObjectName("closeApp")
-
+        self.closeApp.clicked.connect(self.closeWindow)
 
         self.minApp = QtWidgets.QPushButton(self.TitleBar)
         self.minApp.setGeometry(QtCore.QRect(729, 5, 20, 20))
@@ -61,6 +62,7 @@ class Ui_Home(object):
         "}\n"
         "")
         self.minApp.setObjectName("minApp")
+        self.minApp.clicked.connect(self.minimize_window)
 
         self.titlelabel = QtWidgets.QLabel(self.TitleBar)
         self.titlelabel.setGeometry(QtCore.QRect(321, 0, 159, 31))
@@ -440,5 +442,8 @@ class Ui_Home(object):
             return self.min10time
         self.min10time = "00m00s"
         return self.min10time
-
+    def minimize_window(self):
+        self.MainContent.window().showMinimized()
+    def closeWindow(self):
+        self.MainContent.window().close()
 import rc_rc
