@@ -1,74 +1,59 @@
 import sys
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QWidget, QHBoxLayout
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
 
-class CustomTitleBar(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setFixedHeight(30)
-        self.setStyleSheet("background-color: #2E2E2E; color: white;")
+class CustomWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
 
-        self.minimizeButton = QPushButton("-")
-        self.closeButton = QPushButton("X")
-        self.minimizeButton.setFixedSize(30, 30)
+    def initUI(self):
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setGeometry(100, 100, 400, 300)
+
+        self.dragPos = QPoint()
+
+        # Custom title bar
+        self.titleBar = QWidget(self)
+        self.titleBar.setFixedHeight(30)
+        self.titleBar.setStyleSheet("background-color: #444444; color: white;")
+
+        self.titleLabel = QLabel("Custom Title Bar", self.titleBar)
+        self.titleLabel.setStyleSheet("margin-left: 10px;")
+
+        self.closeButton = QPushButton('X', self.titleBar)
+        self.closeButton.setStyleSheet("background-color: red; border: none; color: white;")
         self.closeButton.setFixedSize(30, 30)
+        self.closeButton.clicked.connect(self.close)
 
-        self.minimizeButton.setStyleSheet("background-color: #2E2E2E; color: white;")
-        self.closeButton.setStyleSheet("background-color: #2E2E2E; color: white;")
+        titleLayout = QHBoxLayout(self.titleBar)
+        titleLayout.addWidget(self.titleLabel)
+        titleLayout.addStretch()
+        titleLayout.addWidget(self.closeButton)
+        titleLayout.setContentsMargins(0, 0, 0, 0)
+        self.titleBar.setLayout(titleLayout)
 
-        self.minimizeButton.clicked.connect(self.minimizeWindow)
-        self.closeButton.clicked.connect(self.closeWindow)
+        self.mainLayout = QVBoxLayout()
+        self.mainLayout.addWidget(self.titleBar)
+        self.mainLayout.addStretch()
+        self.setLayout(self.mainLayout)
 
-        layout = QHBoxLayout()
-        layout.addStretch()
-        layout.addWidget(self.minimizeButton)
-        layout.addWidget(self.closeButton)
-        self.setLayout(layout)
-
-    def minimizeWindow(self):
-        self.window().showMinimized()
-
-    def closeWindow(self):
-        self.window().close()
+        # Connect mouse events for dragging
+        self.titleBar.mousePressEvent = self.mousePressEvent
+        self.titleBar.mouseMoveEvent = self.mouseMoveEvent
 
     def mousePressEvent(self, event):
-        self.offset = event.pos()
+        if event.button() == Qt.LeftButton:
+            self.dragPos = event.globalPos() - self.frameGeometry().topLeft()
+            event.accept()
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
-            self.window().move(event.globalPos() - self.offset)
-
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setFixedSize(800, 600)
-        self.setWindowFlags(Qt.FramelessWindowHint)
-
-        self.centralWidget = QWidget()
-        self.setCentralWidget(self.centralWidget)
-
-        self.titleBar = CustomTitleBar(self)
-
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.titleBar)
-        mainLayout.addStretch()
-
-        self.centralWidget.setLayout(mainLayout)
-
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #FFFFFF;
-            }
-            QPushButton {
-                border: none;
-            }
-            QPushButton:hover {
-                background-color: #555555;
-            }
-        """)
+            self.move(event.globalPos() - self.dragPos)
+            event.accept()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    mainWindow = MainWindow()
-    mainWindow.show()
+    mainWin = CustomWindow()
+    mainWin.show()
     sys.exit(app.exec_())

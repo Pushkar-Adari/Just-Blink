@@ -1,9 +1,11 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QBitmap, QPainter, QIcon
-from PyQt5.QtCore import Qt, QRect, QTimer
+from PyQt5.QtCore import Qt, QRect, QTimer, QPoint, pyqtSignal
 
 class Ui_Home(object):
+    mousePressed = pyqtSignal(QPoint)
+    mouseMoved = pyqtSignal(QPoint)
     def setupUi(self, Home):
         #///////// VALUES ///////
         self.min50total = 3000
@@ -21,7 +23,6 @@ class Ui_Home(object):
         self.Central = QtWidgets.QWidget(Home)
         self.Central.setStyleSheet("")
         self.Central.setObjectName("Central")
-
         self.layout = QtWidgets.QVBoxLayout(self.Central)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
@@ -32,6 +33,9 @@ class Ui_Home(object):
         self.TitleBar.setFixedHeight(30)
         self.TitleBar.setStyleSheet("background-color: rgba(1, 1, 1, 1);border-top-left-radius: 20px; border-top-right-radius: 20px;")
         self.TitleBar.setObjectName("TitleBar")
+        self.TitleBar.mousePressEvent = self.mousePressEvent
+        self.TitleBar.mouseMoveEvent = self.mouseMoveEvent
+
         self.layout.addWidget(self.TitleBar)
 
         self.closeApp = QtWidgets.QPushButton(self.TitleBar)
@@ -448,8 +452,9 @@ class Ui_Home(object):
     def closeWindow(self):
         self.MainContent.window().close()
     def mousePressEvent(self,event):
-        self.offset = event.pos()
-    #def mouseMoveEvent(self,event):
-        #if event.buttons() == Qt.LeftButton:
-            #self.MainContent.window().move(event.globalPos()-self.offset)
+        if event.button() == Qt.LeftButton:
+            self.mousePressed.emit(event.globalPos())
+    def mouseMoveEvent(self,event):
+        if event.buttons() == Qt.LeftButton:
+            self.mouseMoved.emit(event.globalPos())
 import rc_rc
