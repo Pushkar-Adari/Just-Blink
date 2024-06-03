@@ -245,7 +245,7 @@ class Ui_Home(object):
                                  "color:transparent;\n"
                                  "}\n"
                                  "QProgressBar::chunk{\n"
-                                 "background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(50,51,113,255),stop:1 rgba(2,19,51,255));\n"
+                                 "background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(2,19,51,255),stop:1 rgba(50,51,113,255));\n"
                                  "border-radius:21px;\n"
                                  "}")
         self.min50.setRange(0, self.min50total)
@@ -339,12 +339,14 @@ class Ui_Home(object):
         self.min50.setValue(self.min50actual)
         if self.min50actual <= 0:
             self.update_restProgress()
-
+        self.min50label.setText(self.update_min50_time())
     def update_restProgress(self):
         self.min10actual -= 1
         self.min10.setValue(self.min10actual)
         if self.min10actual <= 0:
             self.reset_timer()
+        self.min10label.setText(self.update_min10_time())
+
 
     def reset_timer(self):
         self.timer.stop()
@@ -353,5 +355,19 @@ class Ui_Home(object):
         self.min10actual = self.min10total
         self.min10.setValue(self.min10actual)
         self.Pause.setChecked(False)
+        self.min50label.setText("50m00s")
+        self.min10label.setText("10m00s")
 
+    def update_min50_time(self):
+        if self.min50actual > 0:
+            self.min50time = f"{self.min50actual//60:02}m{self.min50actual%60:02}s"
+            return self.min50time
+        self.min50time = "00m00s"
+        return self.min50time
+    def update_min10_time(self):
+        if self.min10actual > 0:
+            self.min10time = f"{self.min10actual//60:02}m{self.min10actual%60:02}s"
+            return self.min10time
+        self.min10time = "00m00s"
+        return self.min10time
 import rc_rc
