@@ -47,11 +47,16 @@
      <enum>Qt::DefaultContextMenu</enum>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgba(43, 11, 11,0.5);
+     <string notr="true">QPushButton{background-color: rgba(1,50,32,0.5);
+border-radius:20;
+color: rgb(10,255,35);
+font: 63 14.5pt &quot;Poppins SemiBold&quot;;
+}
+QPushButton:checked{background-color: rgba(43, 11, 11,0.5);
 border-radius:20;
 color: rgb(249,35,35);
 font: 63 14.5pt &quot;Poppins SemiBold&quot;;
-
+}
 </string>
     </property>
     <property name="text">

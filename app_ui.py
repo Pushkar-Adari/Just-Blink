@@ -13,16 +13,78 @@ class Ui_Home(object):
         #///////// HOME /////////
 
         Home.setObjectName("Home")
-        Home.setFixedSize(800, 570)
+        Home.setFixedSize(800, 600)
         Home.setAutoFillBackground(False)
         Home.setStyleSheet("")
         self.Central = QtWidgets.QWidget(Home)
         self.Central.setStyleSheet("")
         self.Central.setObjectName("Central")
 
+        self.layout = QtWidgets.QVBoxLayout(self.Central)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
+
+        #///////// CUSTOM TITLE BAR /////////
+
+        self.TitleBar = QtWidgets.QFrame(self.Central)
+        self.TitleBar.setFixedHeight(30)
+        self.TitleBar.setStyleSheet("background-color: rgba(1, 1, 1, 1);")
+        self.TitleBar.setObjectName("TitleBar")
+        self.layout.addWidget(self.TitleBar)
+
+        self.closeApp = QtWidgets.QPushButton(self.TitleBar)
+        self.closeApp.setGeometry(QtCore.QRect(762, 5, 20, 20))
+        self.closeApp.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);\n"
+        "border-radius:10px;\n"
+        "icon-size:12px;\n"
+
+        "}\n"
+        "QPushButton:hover{background-color: rgb(255, 0, 0);\n"
+        "border-radius:10px;\n"
+        "icon:url(:/newPrefix/assets/close.png);\n"
+        "}\n"
+        "")
+
+        self.closeApp.setObjectName("closeApp")
+
+
+        self.minApp = QtWidgets.QPushButton(self.TitleBar)
+        self.minApp.setGeometry(QtCore.QRect(729, 5, 20, 20))
+        self.minApp.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);\n"
+        "border-radius:10px;\n"
+        "icon-size:12px;\n"
+
+        "}\n"
+        "QPushButton:hover{background-color: rgb(0, 102, 255);\n"
+        "border-radius:10px;\n"
+        "icon:url(:/newPrefix/assets/min.png);\n"
+        "}\n"
+        "")
+        self.minApp.setObjectName("minApp")
+
+        self.titlelabel = QtWidgets.QLabel(self.TitleBar)
+        self.titlelabel.setGeometry(QtCore.QRect(321, 0, 159, 31))
+        font = QtGui.QFont()
+        font.setFamily("Poppins")
+        font.setPointSize(10)
+        font.setItalic(False)
+        self.titlelabel.setFont(font)
+        self.titlelabel.setStyleSheet(
+            "QLabel{\n"
+            "color:white;\n"
+            "}"
+        )
+        self.titlelabel.setText("Just Blink")
+        self.titlelabel.setAlignment(Qt.AlignCenter)
+
+        #///////// MAIN CONTENT /////////
+
+        self.MainContent = QtWidgets.QWidget(self.Central)
+        self.MainContent.setObjectName("MainContent")
+        self.layout.addWidget(self.MainContent)
         #///////// START/STOP  /////////
 
-        self.StartStop = QtWidgets.QPushButton(self.Central)
+        self.StartStop = QtWidgets.QPushButton(self.MainContent)
         self.StartStop.setEnabled(True)
         self.StartStop.setGeometry(QtCore.QRect(502, 355, 267, 82))
         font = QtGui.QFont()
@@ -31,19 +93,24 @@ class Ui_Home(object):
         font.setItalic(False)
         self.StartStop.setFont(font)
         self.StartStop.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        self.StartStop.setStyleSheet("background-color: rgba(43, 11, 11,0.5);\n"
-                                     "border-radius:20;\n"
-                                     "color: rgb(249,35,35);\n"
-                                     "font: 63 14.5pt \"Poppins SemiBold\";\n"
-                                     "\n"
-                                     "")
+        self.StartStop.setStyleSheet("QPushButton{background-color: rgba(1,50,32,0.5);\n"
+"border-radius:20;\n"
+"color: rgb(10,255,35);\n"
+"font: 63 14.5pt \"Poppins SemiBold\";\n"
+"}\n"
+"QPushButton:checked{background-color: rgba(43, 11, 11,0.5);\n"
+"border-radius:20;\n"
+"color: rgb(249,35,35);\n"
+"font: 63 14.5pt \"Poppins SemiBold\";\n"
+"}\n"
+"")
         self.StartStop.setCheckable(True)
         self.StartStop.setChecked(False)
         self.StartStop.setObjectName("StartStop")
 
         #///////// LOGO /////////
 
-        self.Logo = QtWidgets.QLabel(self.Central)
+        self.Logo = QtWidgets.QLabel(self.MainContent)
         self.Logo.setGeometry(QtCore.QRect(50, 28, 207, 55))
         font = QtGui.QFont()
         font.setFamily("Poppins")
@@ -58,7 +125,7 @@ class Ui_Home(object):
 
         #///////// PROFILE /////////
 
-        self.Profile = QtWidgets.QToolButton(self.Central)
+        self.Profile = QtWidgets.QToolButton(self.MainContent)
         self.Profile.setGeometry(QtCore.QRect(663, 33, 43, 43))
         self.Profile.setStyleSheet("background-color: rgb(19, 19, 19);\n"
                                    "border-radius:21px;\n"
@@ -70,7 +137,7 @@ class Ui_Home(object):
 
         #///////// SETTINGS /////////
 
-        self.Setting = QtWidgets.QToolButton(self.Central)
+        self.Setting = QtWidgets.QToolButton(self.MainContent)
         self.Setting.setGeometry(QtCore.QRect(718, 33, 43, 43))
         self.Setting.setStyleSheet("background-color: rgb(19, 19, 19);\n"
                                    "border-radius:21px;\n"
@@ -82,7 +149,7 @@ class Ui_Home(object):
 
         #///////// AVERAGE /////////
 
-        self.Avg = QtWidgets.QFrame(self.Central)
+        self.Avg = QtWidgets.QFrame(self.MainContent)
         self.Avg.setGeometry(QtCore.QRect(502, 108, 267, 111))
         self.Avg.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
                                "border-radius:20px;")
@@ -105,7 +172,7 @@ class Ui_Home(object):
 
         #///////// WEEKLY /////////
 
-        self.Week = QtWidgets.QFrame(self.Central)
+        self.Week = QtWidgets.QFrame(self.MainContent)
         self.Week.setGeometry(QtCore.QRect(502, 230, 267, 111))
         self.Week.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
                                 "border-radius:20px;")
@@ -126,7 +193,7 @@ class Ui_Home(object):
 
         #///////// GRAPH /////////
 
-        self.Graph = QtWidgets.QFrame(self.Central)
+        self.Graph = QtWidgets.QFrame(self.MainContent)
         self.Graph.setGeometry(QtCore.QRect(31, 108, 458, 329))
         self.Graph.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
                                  "border-radius:20px;")
@@ -136,7 +203,7 @@ class Ui_Home(object):
 
         #///////// TIMER /////////
 
-        self.TimerLabel = QtWidgets.QLabel(self.Central)
+        self.TimerLabel = QtWidgets.QLabel(self.MainContent)
         self.TimerLabel.setGeometry(QtCore.QRect(43, 450, 210, 44))
         font = QtGui.QFont()
         font.setFamily("Poppins")
@@ -152,7 +219,7 @@ class Ui_Home(object):
         self.TimerLabel.setWordWrap(False)
         self.TimerLabel.setObjectName("TimerLabel")
 
-        self.Pause = QtWidgets.QToolButton(self.Central)
+        self.Pause = QtWidgets.QToolButton(self.MainContent)
         self.Pause.setGeometry(QtCore.QRect(678, 498, 43, 43))
         self.Pause.setStyleSheet("background-color: rgb(19, 19, 19);\n"
                                  "border-radius:21px;\n"
@@ -166,7 +233,7 @@ class Ui_Home(object):
         self.Pause.setObjectName("Pause")
         self.Pause.toggled.connect(self.toggle_timer)
 
-        self.Reset = QtWidgets.QToolButton(self.Central)
+        self.Reset = QtWidgets.QToolButton(self.MainContent)
         self.Reset.setGeometry(QtCore.QRect(726, 498, 43, 43))
         self.Reset.setStyleSheet("background-color: rgb(19, 19, 19);\n"
                                  "border-radius:21px;\n"
@@ -177,7 +244,7 @@ class Ui_Home(object):
         self.Reset.setObjectName("Reset")
         self.Reset.clicked.connect(self.reset_timer)
 
-        self.Name = QtWidgets.QFrame(self.Central)
+        self.Name = QtWidgets.QFrame(self.MainContent)
         self.Name.setGeometry(QtCore.QRect(586, 38, 119, 32))
         self.Name.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
                                 "border-radius:15px\n"
@@ -186,7 +253,7 @@ class Ui_Home(object):
         self.Name.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Name.setObjectName("Name")
 
-        self.Background = QtWidgets.QFrame(self.Central)
+        self.Background = QtWidgets.QFrame(self.MainContent)
         self.Background.setGeometry(QtCore.QRect(0, 0, 800, 600))
         self.Background.setStyleSheet("border-image: url(:/newPrefix/b2.png) 0 0 0 0 stretch stretch;\n"
                                       "border-width: 0px;\n"
@@ -197,7 +264,7 @@ class Ui_Home(object):
 
         #///////// PROGRESS BARS /////////
 
-        self.min10 = QtWidgets.QProgressBar(self.Central)
+        self.min10 = QtWidgets.QProgressBar(self.MainContent)
         self.min10.setGeometry(QtCore.QRect(32, 498, 106, 43))
         self.min10.setStyleSheet("QProgressBar{\n"
                                  "background-color:rgba(45,45,45,0.5);\n"
@@ -222,7 +289,7 @@ class Ui_Home(object):
         p.drawRoundedRect(QRect(0, 0, bm.width(), bm.height()), radius, radius)
         p.end()
         self.min10.setMask(bm)
-        self.min10label = QtWidgets.QLabel(self.Central)
+        self.min10label = QtWidgets.QLabel(self.MainContent)
         self.min10label.setGeometry(QtCore.QRect(32, 498, 106, 43))
         font = QtGui.QFont()
         font.setFamily("Poppins")
@@ -236,7 +303,7 @@ class Ui_Home(object):
         )
         self.min10label.setText("10m00s")
         self.min10label.setAlignment(Qt.AlignCenter)
-        self.min50 = QtWidgets.QProgressBar(self.Central)
+        self.min50 = QtWidgets.QProgressBar(self.MainContent)
         self.min50.setGeometry(QtCore.QRect(143, 498, 530, 43))
         self.min50.setStyleSheet("QProgressBar{\n"
                                  "background-color:rgba(45,45,45,0.5);\n"
@@ -262,7 +329,7 @@ class Ui_Home(object):
         p.end()
         self.min50.setMask(bm)
 
-        self.min50label = QtWidgets.QLabel(self.Central)
+        self.min50label = QtWidgets.QLabel(self.MainContent)
         self.min50label.setGeometry(QtCore.QRect(143, 498, 530, 43))
         font = QtGui.QFont()
         font.setFamily("Poppins")
@@ -293,6 +360,8 @@ class Ui_Home(object):
         self.min50.raise_()
         self.min10label.raise_()
         self.min50label.raise_()
+        self.closeApp.raise_()
+
 
         Home.setCentralWidget(self.Central)
 

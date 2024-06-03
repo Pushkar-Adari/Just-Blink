@@ -9,5 +9,7 @@
         <file>b2.png</file>
         <file>assets/down.png</file>
         <file>assets/up.png</file>
+        <file>assets/close.png</file>
+        <file>assets/min.png</file>
     </qresource>
 </RCC>
