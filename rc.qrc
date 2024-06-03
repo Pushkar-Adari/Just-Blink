@@ -7,5 +7,7 @@
         <file>assets/user.png</file>
         <file>b1.png</file>
         <file>b2.png</file>
+        <file>assets/down.png</file>
+        <file>assets/up.png</file>
     </qresource>
 </RCC>

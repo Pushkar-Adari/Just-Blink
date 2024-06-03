@@ -153,7 +153,7 @@ border-radius:20px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="AverageLabel">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -184,6 +184,29 @@ color:white;
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>72</x>
+       <y>50</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>22/MIN</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QFrame" name="Week">
     <property name="geometry">
@@ -204,7 +227,7 @@ border-radius:20px;</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="ReportLabel">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -226,6 +249,32 @@ color:white;</string>
      </property>
      <property name="text">
       <string>Weekly Report :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>121</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Poppins</family>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color:#55EF44</string>
+     </property>
+     <property name="text">
+      <string>40%</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -337,77 +386,6 @@ icon-size:20px;</string>
       <normaloff>:/newPrefix/assets/reset.png</normaloff>:/newPrefix/assets/reset.png</iconset>
     </property>
    </widget>
-   <widget class="QSlider" name="min50">
-    <property name="geometry">
-     <rect>
-      <x>143</x>
-      <y>498</y>
-      <width>530</width>
-      <height>43</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QSlider::groove:horizontal{
-height:43px;
-	background-color: rgba(45, 45, 45, 175);
-border-radius:21px
-}
-QSlider::handle:horizontal{
-	background: rgba(0, 0, 0, 0);
-}
-QSlider::add-page:horizontal{
-height:43px;
-	background:rgb(45,45,45,0.5);
-border-radius:21px
-}
-QSlider::sub-page:horizontal{
-height:43px;
-	background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(50,51,113,255),stop:1 rgba(2,19,51,255));
-border-radius:21px;
-margin-left:0px;
-padding-left:21px;
-}</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QSlider" name="min10">
-    <property name="geometry">
-     <rect>
-      <x>32</x>
-      <y>498</y>
-      <width>106</width>
-      <height>43</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QSlider::groove:horizontal{
-height:43px;
-	background-color: rgba(45, 45, 45, 175);
-border-radius:21px
-}
-QSlider::handle:horizontal{
-	background: rgba(255, 255, 255, 0);
-}
-QSlider::add-page:horizontal{
-height:43px;
-	background:rgb(45,45,45,0.5);
-border-radius:21px
-}
-QSlider::sub-page:horizontal{
-height:43px;
-	background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(52,30,63,255),stop:1 rgba(134,89,157,255));
-border-radius:21px;
-overflow: hidden;
-margin-left:0px;
-padding-left:21px;
-}</string>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
    <widget class="QFrame" name="Name">
     <property name="geometry">
      <rect>
@@ -450,7 +428,7 @@ border-width: 0px;
      <enum>QFrame::Raised</enum>
     </property>
    </widget>
-   <widget class="QProgressBar" name="min10_2">
+   <widget class="QProgressBar" name="min10">
     <property name="geometry">
      <rect>
       <x>32</x>
@@ -464,6 +442,7 @@ border-width: 0px;
 background-color:rgba(45,45,45,0.5);
 border-radius:21px;
 text-align:center;
+color:transparent;
 }
 QProgressBar::chunk{
 background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(52,30,63,255),stop:1 rgba(134,89,157,255));
@@ -475,7 +454,7 @@ overflow:hidden;
      <number>24</number>
     </property>
    </widget>
-   <widget class="QProgressBar" name="min50_2">
+   <widget class="QProgressBar" name="min50">
     <property name="geometry">
      <rect>
       <x>143</x>
@@ -489,6 +468,7 @@ overflow:hidden;
 background-color:rgba(45,45,45,0.5);
 border-radius:21px;
 text-align:center;
+color:transparent;
 }
 QProgressBar::chunk{
 background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(50,51,113,255),stop:1 rgba(2,19,51,255));
@@ -499,7 +479,30 @@ border-radius:21px;
      <number>24</number>
     </property>
    </widget>
-   <zorder>min50</zorder>
+   <widget class="QLabel" name="min50label">
+    <property name="geometry">
+     <rect>
+      <x>143</x>
+      <y>498</y>
+      <width>530</width>
+      <height>43</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Poppins</family>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color:white;</string>
+    </property>
+    <property name="text">
+     <string>50m00s</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
    <zorder>Background</zorder>
    <zorder>Name</zorder>
    <zorder>StartStop</zorder>
@@ -511,10 +514,10 @@ border-radius:21px;
    <zorder>TimerLabel</zorder>
    <zorder>Pause</zorder>
    <zorder>Reset</zorder>
-   <zorder>min10</zorder>
    <zorder>Profile</zorder>
-   <zorder>min10_2</zorder>
-   <zorder>min50_2</zorder>
+   <zorder>min10</zorder>
+   <zorder>min50</zorder>
+   <zorder>min50label</zorder>
   </widget>
  </widget>
  <resources>

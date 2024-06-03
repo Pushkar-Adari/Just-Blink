@@ -225,7 +225,7 @@ class Ui_Home(object):
         self.min10label = QtWidgets.QLabel(self.Central)
         self.min10label.setGeometry(QtCore.QRect(32, 498, 106, 43))
         font = QtGui.QFont()
-        font.setFamily("Poppins ExtraLight")
+        font.setFamily("Poppins")
         font.setPointSize(9)
         font.setItalic(False)
         self.min10label.setFont(font)
@@ -265,7 +265,7 @@ class Ui_Home(object):
         self.min50label = QtWidgets.QLabel(self.Central)
         self.min50label.setGeometry(QtCore.QRect(143, 498, 530, 43))
         font = QtGui.QFont()
-        font.setFamily("Poppins ExtraLight")
+        font.setFamily("Poppins")
         font.setPointSize(9)
         font.setItalic(False)
         self.min50label.setFont(font)
@@ -358,6 +358,7 @@ class Ui_Home(object):
         self.min50label.setText("50m00s")
         self.min10label.setText("10m00s")
 
+
     def update_min50_time(self):
         if self.min50actual > 0:
             self.min50time = f"{self.min50actual//60:02}m{self.min50actual%60:02}s"
@@ -370,4 +371,5 @@ class Ui_Home(object):
             return self.min10time
         self.min10time = "00m00s"
         return self.min10time
+
 import rc_rc
