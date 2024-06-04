@@ -1,7 +1,23 @@
 import sys
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
 from app_ui import Ui_Home
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+
+class MyMplCanvas(FigureCanvas):
+    def __init__(self, parent=None):
+        plt.style.use('theme.mplstyle')
+        fig = Figure()
+        self.axes = fig.add_subplot(111)
+        super(MyMplCanvas, self).__init__(fig)
+        self.setParent(parent)
+        self.plot()
+        
+    def plot(self):
+        self.axes.plot([1, 2, 3, 4, 5], [1, 2, 3, 2, 1])
+
 class Ui_HomeWrapper(QObject):
     mousePressed = pyqtSignal(QPoint)
     mouseMoved = pyqtSignal(QPoint)
@@ -33,12 +49,14 @@ class MainWindow(QMainWindow):
 
         self.ui_wrapper = Ui_HomeWrapper(self)
         self.ui_wrapper.setupUi(self)
-
-        # Expose the signals from Ui_HomeWrapper
+        
+        self.graph_layout = QVBoxLayout(self.ui_wrapper.ui.Graph)
+        self.ui_wrapper.ui.Graph.setLayout(self.graph_layout)
+        self.canvas = MyMplCanvas(self.ui_wrapper.ui.Graph)
+        self.graph_layout.addWidget(self.canvas)        
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
 
-        # Connect the signals to slots
         self.mousePressed.connect(self.handleMousePressed)
         self.mouseMoved.connect(self.handleMouseMoved)
 
@@ -47,6 +65,7 @@ class MainWindow(QMainWindow):
 
     def handleMouseMoved(self, globalPos):
         self.move(globalPos - self.dragPos)
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
