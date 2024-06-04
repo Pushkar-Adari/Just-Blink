@@ -14,6 +14,12 @@ class MyMplCanvas(FigureCanvas):
         super(MyMplCanvas, self).__init__(fig)
         self.setParent(parent)
         self.plot()
+    # def __init__(self, parent=None):
+    #     fig = Figure(facecolor='none')
+    #     self.axes = fig.add_subplot(111,facecolor='none')
+    #     super(MyMplCanvas, self).__init__(fig)
+    #     self.setParent(parent)
+    #     self.plot()
         
     def plot(self):
         self.axes.plot([1, 2, 3, 4, 5], [1, 2, 3, 2, 1])
@@ -53,7 +59,7 @@ class MainWindow(QMainWindow):
         self.graph_layout = QVBoxLayout(self.ui_wrapper.ui.Graph)
         self.ui_wrapper.ui.Graph.setLayout(self.graph_layout)
         self.canvas = MyMplCanvas(self.ui_wrapper.ui.Graph)
-        self.graph_layout.addWidget(self.canvas)        
+        self.graph_layout.addWidget(self.canvas)     
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
 

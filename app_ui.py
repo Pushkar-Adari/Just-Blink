@@ -202,8 +202,7 @@ class Ui_Home(object):
 
         self.Graph = QtWidgets.QFrame(self.MainContent)
         self.Graph.setGeometry(QtCore.QRect(31, 108, 458, 329))
-        self.Graph.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
-                                 "border-radius:20px;")
+        self.Graph.setStyleSheet("QFrame{background-color: rgba(19, 19, 19,0.7);""border-radius:20px;}QFrame *{background-color:transparent}")
         self.Graph.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Graph.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Graph.setObjectName("Graph")
