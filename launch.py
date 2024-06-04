@@ -13,16 +13,21 @@ class MyMplCanvas(FigureCanvas):
         self.axes = fig.add_subplot(111)
         super(MyMplCanvas, self).__init__(fig)
         self.setParent(parent)
-        self.plot()
-    # def __init__(self, parent=None):
-    #     fig = Figure(facecolor='none')
-    #     self.axes = fig.add_subplot(111,facecolor='none')
-    #     super(MyMplCanvas, self).__init__(fig)
-    #     self.setParent(parent)
-    #     self.plot()
         
+        self.plot()
+
     def plot(self):
-        self.axes.plot([1, 2, 3, 4, 5], [1, 2, 3, 2, 1])
+        self.axes.clear()
+        days = ["TU","WE","TH","FR","SA","SU","MO","T2"]
+        values = [16, 20, 21, 22, 23, 18, 23, 26]
+        self.axes.bar(days,values,width=0.55)
+        xticklabels = [day[0] for day in days]
+        self.axes.set_xticks(range(len(days)))
+        self.axes.set_xticklabels(xticklabels)
+        yticks = self.axes.get_yticks()
+        yticks = ['' if tick == 0 else f'{int(tick)}' for tick in yticks]
+        self.axes.set_yticklabels(yticks)
+        self.draw()
 
 class Ui_HomeWrapper(QObject):
     mousePressed = pyqtSignal(QPoint)
