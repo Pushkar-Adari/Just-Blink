@@ -34,6 +34,11 @@ xtick.major.size : 0
 ytick.major.size : 0
 xtick.minor.size : 0
 ytick.minor.size : 0
+xtick.major.pad         : 10.0     # distance to major tick label in points
+ytick.major.pad         : 10.0  
+
+text.color: white
+
 axes.grid.axis: y
 grid.color: 3F3F3F
 grid.linestyle: -    # solid line

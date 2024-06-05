@@ -5,6 +5,8 @@ from app_ui import Ui_Home
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
+import numpy as np
 
 class MyMplCanvas(FigureCanvas):
     def __init__(self, parent=None):
@@ -20,14 +22,33 @@ class MyMplCanvas(FigureCanvas):
         self.axes.clear()
         days = ["TU","WE","TH","FR","SA","SU","MO","T2"]
         values = [16, 20, 21, 22, 23, 18, 23, 26]
-        self.axes.bar(days,values,width=0.55)
+        bar_width = 0.55
+        for i, value in enumerate(values):
+            self.gradient_rect(i, 0, bar_width, value, '#8B5CA3', '#54427C')
+        xtick_positions = np.arange(len(days)) + bar_width / 2
+        self.axes.set_xticks(xtick_positions)
         xticklabels = [day[0] for day in days]
-        self.axes.set_xticks(range(len(days)))
         self.axes.set_xticklabels(xticklabels)
         yticks = self.axes.get_yticks()
         yticks = ['' if tick == 0 else f'{int(tick)}' for tick in yticks]
+        self.axes.set_yticklabels(yticks, ha='center')
         self.axes.set_yticklabels(yticks)
+        self.axes.set_xlim(-0.5, len(days) - 0.5)
+        self.axes.set_ylabel('Average',fontstyle='italic',color='darkgrey')
+        self.customize_zorder()
+        goodavg = self.axes.axhline(y=15, color='mediumspringgreen', linestyle='dotted')
+        goodavg.set_zorder(1)
         self.draw()
+
+    def gradient_rect(self, x, y, width, height, color1, color2):
+        gradient = np.linspace(0, 1, 256).reshape(-1, 1)
+        gradient = np.hstack((gradient, gradient))
+        cmap = LinearSegmentedColormap.from_list("custom_gradient", [color1, color2])
+        rect = self.axes.imshow(gradient, extent=(x, x + width, y, y + height), aspect='auto', cmap=cmap, interpolation='bicubic',zorder=2)
+        rect.set_clip_path(self.axes.patch)
+    def customize_zorder(self):
+        self.axes.set_zorder(3)
+        self.axes.grid(True, which='minor', linestyle='-', zorder=1)
 
 class Ui_HomeWrapper(QObject):
     mousePressed = pyqtSignal(QPoint)
