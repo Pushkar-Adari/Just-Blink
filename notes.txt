@@ -11,3 +11,5 @@ https://unsplash.com/photos/a-dark-background-with-a-blue-and-purple-swirl--8FjV
 
 106 10min 5px break
 530 50min
+
+<a target="_blank" href="https://icons8.com/icon/lzICmAiUWSkI/info">Info</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>

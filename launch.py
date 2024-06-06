@@ -1,11 +1,13 @@
 import sys
-from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
 from app_ui import Ui_Home
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+import cv2
+from cvzone.FaceMeshModule import FaceMeshDetector
 import numpy as np
 
 class MyMplCanvas(FigureCanvas):
@@ -15,7 +17,6 @@ class MyMplCanvas(FigureCanvas):
         self.axes = fig.add_subplot(111)
         super(MyMplCanvas, self).__init__(fig)
         self.setParent(parent)
-        
         self.plot()
 
     def plot(self):
@@ -36,8 +37,11 @@ class MyMplCanvas(FigureCanvas):
         self.axes.set_xlim(-0.5, len(days) - 0.5)
         self.axes.set_ylabel('Average',fontstyle='italic',color='darkgrey')
         self.customize_zorder()
-        goodavg = self.axes.axhline(y=15, color='mediumspringgreen', linestyle='dotted')
+        average_value = sum(values) / len(values)
+        avgweek = self.axes.axhline(y=average_value, color='grey', linestyle='dotted', label = 'Weekly average')
+        goodavg = self.axes.axhline(y=15, color='mediumspringgreen', linestyle='dotted', label = 'Healthy')
         goodavg.set_zorder(1)
+        avgweek.set_zorder(1)
         self.draw()
 
     def gradient_rect(self, x, y, width, height, color1, color2):

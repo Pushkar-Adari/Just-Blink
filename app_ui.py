@@ -163,40 +163,64 @@ class Ui_Home(object):
         self.Avg.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Avg.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Avg.setObjectName("Avg")
-        self.label = QtWidgets.QLabel(self.Avg)
-        self.label.setGeometry(QtCore.QRect(0, 0, 263, 61))
+        self.AverageHeading = QtWidgets.QLabel(self.Avg)
+        self.AverageHeading.setGeometry(QtCore.QRect(0, 0, 263, 61))
         font = QtGui.QFont()
         font.setFamily("Poppins")
         font.setPointSize(14)
         font.setItalic(True)
-        self.label.setFont(font)
-        self.label.setAutoFillBackground(False)
-        self.label.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
+        self.AverageHeading.setFont(font)
+        self.AverageHeading.setAutoFillBackground(False)
+        self.AverageHeading.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
                                  "color:white;\n"
                                  "")
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
+        self.AverageHeading.setAlignment(QtCore.Qt.AlignCenter)
+        self.AverageHeading.setObjectName("AverageHeading")
+        self.AvgBlinksPerMinute = QtWidgets.QLabel(self.Avg)
+        self.AvgBlinksPerMinute.setGeometry(QtCore.QRect(0, 61, 263, 41))
+        font = QtGui.QFont()
+        font.setFamily("Poppins SemiBold")
+        font.setPointSize(24)
+        self.AvgBlinksPerMinute.setFont(font)
+        self.AvgBlinksPerMinute.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
+                                 "color:white;\n"
+                                 "")
+        self.AvgBlinksPerMinute.setAlignment(QtCore.Qt.AlignCenter)
+        self.AvgBlinksPerMinute.setObjectName("AvgBlinksPerMinute")
 
-        #///////// WEEKLY /////////
-
+        #///////// WEEKLY GROWTH /////////
         self.Week = QtWidgets.QFrame(self.MainContent)
         self.Week.setGeometry(QtCore.QRect(502, 230, 267, 111))
-        self.Week.setStyleSheet("background-color: rgba(19, 19, 19,    0.7);\n"
+        self.Week.setStyleSheet("background-color: rgba(19, 19, 19, 0.7);\n"
                                 "border-radius:20px;")
         self.Week.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Week.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Week.setObjectName("Week")
-        self.label_2 = QtWidgets.QLabel(self.Week)
-        self.label_2.setGeometry(QtCore.QRect(0, 0, 263, 61))
+
+        self.weekHeading = QtWidgets.QLabel(self.Week)
+        self.weekHeading.setGeometry(QtCore.QRect(0, 0, 263, 61))
         font = QtGui.QFont()
         font.setFamily("Poppins")
         font.setPointSize(14)
         font.setItalic(True)
-        self.label_2.setFont(font)
-        self.label_2.setStyleSheet("background-color: rgba(0,0,0,0);\n"
+        self.weekHeading.setFont(font)
+        self.weekHeading.setStyleSheet("background-color: rgba(0,0,0,0);\n"
                                    "color:white;")
-        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setObjectName("label_2")
+        self.weekHeading.setAlignment(QtCore.Qt.AlignCenter)
+        self.weekHeading.setObjectName("weekHeading")
+
+        self.weeklyGrowth = QtWidgets.QLabel(self.Week)
+        self.weeklyGrowth.setGeometry(QtCore.QRect(0, 50, 263, 41))
+        font = QtGui.QFont()
+        font.setFamily("Poppins SemiBold")
+        font.setPointSize(16)
+        font.setItalic(False)
+        self.weeklyGrowth.setFont(font)
+        self.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);\n"
+                                   "color:#00FF1A;")
+        self.weeklyGrowth.setAlignment(QtCore.Qt.AlignCenter)
+        self.weeklyGrowth.setObjectName("weeklyGrowth")
+
 
         #///////// GRAPH /////////
 
@@ -224,7 +248,6 @@ class Ui_Home(object):
         self.TimerLabel.setFrameShadow(QtWidgets.QFrame.Plain)
         self.TimerLabel.setWordWrap(False)
         self.TimerLabel.setObjectName("TimerLabel")
-
         self.Pause = QtWidgets.QToolButton(self.MainContent)
         self.Pause.setGeometry(QtCore.QRect(678, 498, 43, 43))
         self.Pause.setStyleSheet("background-color: rgb(19, 19, 19);\n"
@@ -239,7 +262,6 @@ class Ui_Home(object):
         self.Pause.setObjectName("Pause")
         self.Pause.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
         self.Pause.toggled.connect(self.toggle_timer)
-
         self.Reset = QtWidgets.QToolButton(self.MainContent)
         self.Reset.setGeometry(QtCore.QRect(726, 498, 43, 43))
         self.Reset.setStyleSheet("background-color: rgb(19, 19, 19);\n"
@@ -259,7 +281,6 @@ class Ui_Home(object):
         self.Name.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Name.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Name.setObjectName("Name")
-
         self.Background = QtWidgets.QFrame(self.MainContent)
         self.Background.setGeometry(QtCore.QRect(0, 0, 800, 569))
         self.Background.setStyleSheet("border-image: url(:/newPrefix/b2.png) 0 0 0 0 stretch stretch;\n"
@@ -388,8 +409,9 @@ class Ui_Home(object):
         self.Logo.setText(_translate("Home", "Just Blink"))
         self.Profile.setText(_translate("Home", "..."))
         self.Setting.setText(_translate("Home", "..."))
-        self.label.setText(_translate("Home", "Average Blinks:"))
-        self.label_2.setText(_translate("Home", "Weekly Report :"))
+        self.AverageHeading.setText(_translate("Home", "Average Blinks:"))
+        self.weekHeading.setText(_translate("Home", "Weekly Report :"))
+        self.weeklyGrowth.setText(_translate("Home", "40%"))
         self.TimerLabel.setText(_translate("Home", "Pomodoro Timer"))
         self.Pause.setText(_translate("Home", "..."))
         self.Reset.setText(_translate("Home", "..."))
