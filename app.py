@@ -128,6 +128,7 @@ class MainWindow(QMainWindow):
             self.stop_detection()
 
     def start_detection(self):
+        self.cap = cv2.VideoCapture(0)
         self.blinkCount = 0
         self.counter = 0
         self.ratioList = []
@@ -136,6 +137,7 @@ class MainWindow(QMainWindow):
         
     def stop_detection(self):
         self.timer.stop()
+        self.cap.release()
         
     def update_frame(self):
         success, img = self.cap.read()
