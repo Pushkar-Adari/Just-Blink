@@ -1,12 +1,15 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+import cv2
+import cvzone
+from cvzone.FaceMeshModule import FaceMeshDetector
 import numpy as np
 import rc_rc
 
@@ -86,22 +89,88 @@ class MainWindow(QMainWindow):
 
         self.ui_wrapper = Ui_HomeWrapper(self)
         self.ui_wrapper.setupUi(self)
-        
+        self.elapsed_timer = QElapsedTimer()
+        self.timer = QTimer()
+
         self.graph_layout = QVBoxLayout(self.ui_wrapper.ui.Graph)
         self.ui_wrapper.ui.Graph.setLayout(self.graph_layout)
         self.canvas = MyMplCanvas(self.ui_wrapper.ui.Graph)
         self.graph_layout.addWidget(self.canvas)
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
+        #INITIALIZE CV
+        self.cap = cv2.VideoCapture(0)
+        self.detector = FaceMeshDetector(maxFaces=1)
+        self.idlist = [22, 23, 24, 26, 110, 130, 157, 158, 159, 160, 161, 243]
+        self.ratioList = []
+        self.blinkCount = 0
+        self.counter = 0
+        
+        # Timer for updating frames
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_frame)
 
+        # Elapsed timer
+        self.elapsed_timer = QElapsedTimer()
         self.mousePressed.connect(self.handleMousePressed)
         self.mouseMoved.connect(self.handleMouseMoved)
-
+        self.ui_wrapper.ui.StartStop.clicked.connect(self.toggle_detection)
     def handleMousePressed(self, globalPos):
         self.dragPos = globalPos - self.frameGeometry().topLeft()
 
     def handleMouseMoved(self, globalPos):
         self.move(globalPos - self.dragPos)
+
+    def toggle_detection(self, checked):
+        if checked:
+            self.start_detection()
+        else:
+            self.stop_detection()
+
+    def start_detection(self):
+        self.blinkCount = 0
+        self.counter = 0
+        self.ratioList = []
+        self.elapsed_timer.start()
+        self.timer.start(30)  # Update frame every 30 ms
+        
+    def stop_detection(self):
+        self.timer.stop()
+        
+    def update_frame(self):
+        success, img = self.cap.read()
+        if not success:
+            return
+        
+        img, faces = self.detector.findFaceMesh(img, draw=False)
+        if faces:
+            face = faces[0]
+            eyeTop = face[159]
+            eyeBot = face[23]
+            eyeLeft = face[130]
+            eyeRight = face[243]
+            eyeLength, _ = self.detector.findDistance(eyeTop, eyeBot)
+            eyeWidth, _ = self.detector.findDistance(eyeLeft, eyeRight)
+            ratio = (eyeLength / eyeWidth) * 100
+            self.ratioList.append(ratio)
+            if len(self.ratioList) > 7:
+                self.ratioList.pop(0)
+            avgRatio = sum(self.ratioList) / len(self.ratioList)
+            dynamic_limit = avgRatio * 0.9
+            if ratio < dynamic_limit and self.counter == 0:
+                self.blinkCount += 1
+                self.counter = 1
+            if self.counter != 0:
+                self.counter += 1
+                if self.counter > 10:
+                    self.counter = 0
+            
+            elapsed_time_sec = self.elapsed_timer.elapsed() / 1000  
+            elapsed_time_min = elapsed_time_sec / 60  
+            if elapsed_time_min > 0:
+                avg_blinks_per_min = self.blinkCount / elapsed_time_min
+                self.ui_wrapper.ui.AvgBlinksPerMinute.setText(f"{avg_blinks_per_min:.0f}/MIN")
+
 
 class Ui_Home(object):
     mousePressed = pyqtSignal(QPoint)
@@ -229,10 +298,10 @@ class Ui_Home(object):
         self.AverageHeading.setObjectName("AverageHeading")
 
         self.AvgBlinksPerMinute = QLabel(self.Avg)
-        self.AvgBlinksPerMinute.setGeometry(0, 61, 263, 41)
+        self.AvgBlinksPerMinute.setGeometry(0, 50, 263, 41)
         font = QFont()
         font.setFamily("Poppins SemiBold")
-        font.setPointSize(24)
+        font.setPointSize(16)
         self.AvgBlinksPerMinute.setFont(font)
         self.AvgBlinksPerMinute.setStyleSheet("background-color: rgba(255, 255, 255, 0);color:white;")
         self.AvgBlinksPerMinute.setAlignment(Qt.AlignCenter)
@@ -417,6 +486,8 @@ class Ui_Home(object):
         self.Profile.setText(_translate("Home", "..."))
         self.Setting.setText(_translate("Home", "..."))
         self.AverageHeading.setText(_translate("Home", "Average Blinks:"))
+        self.AvgBlinksPerMinute.setText(_translate("Home", "Not active"))
+
         self.weekHeading.setText(_translate("Home", "Weekly Report :"))
         self.weeklyGrowth.setText(_translate("Home", "40%"))
         self.TimerLabel.setText(_translate("Home", "Pomodoro Timer"))
@@ -489,6 +560,7 @@ class Ui_Home(object):
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
             self.mouseMoved.emit(event.globalPos())
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
