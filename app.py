@@ -123,8 +123,12 @@ class MainWindow(QMainWindow):
 
     def toggle_detection(self, checked):
         if checked:
+            self.ui_wrapper.ui.StartStop.setText("Starting...")
             self.start_detection()
+            self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
+
         else:
+            self.ui_wrapper.ui.StartStop.setText("Start Tracking")
             self.stop_detection()
 
     def start_detection(self):
@@ -134,11 +138,12 @@ class MainWindow(QMainWindow):
         self.ratioList = []
         self.elapsed_timer.start()
         self.timer.start(30)  # Update frame every 30 ms
+    
         
     def stop_detection(self):
         self.timer.stop()
         self.cap.release()
-        
+    
     def update_frame(self):
         success, img = self.cap.read()
         if not success:
@@ -246,7 +251,6 @@ class Ui_Home(object):
         self.StartStop.setChecked(False)
         self.StartStop.setObjectName("StartStop")
         self.StartStop.setCursor(QCursor(Qt.PointingHandCursor))
-
         #///////// LOGO /////////
         self.Logo = QLabel(self.MainContent)
         self.Logo.setGeometry(50, 28, 207, 55)
@@ -483,7 +487,6 @@ class Ui_Home(object):
     def retranslateUi(self, Home):
         _translate = QtCore.QCoreApplication.translate
         Home.setWindowTitle(_translate("Home", "Just Blink"))
-        self.StartStop.setText(_translate("Home", "Stop Tracking"))
         self.Logo.setText(_translate("Home", "Just Blink"))
         self.Profile.setText(_translate("Home", "..."))
         self.Setting.setText(_translate("Home", "..."))
@@ -493,6 +496,8 @@ class Ui_Home(object):
         self.weekHeading.setText(_translate("Home", "Weekly Report :"))
         self.weeklyGrowth.setText(_translate("Home", "40%"))
         self.TimerLabel.setText(_translate("Home", "Pomodoro Timer"))
+        self.StartStop.setText(_translate("Home", "Start Tracking"))
+
         self.Pause.setText(_translate("Home", "..."))
         self.Reset.setText(_translate("Home", "..."))
 
