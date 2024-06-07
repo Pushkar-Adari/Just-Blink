@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -124,8 +124,8 @@ class MainWindow(QMainWindow):
     def toggle_detection(self, checked):
         if checked:
             self.ui_wrapper.ui.StartStop.setText("Starting...")
+            QCoreApplication.processEvents()
             self.start_detection()
-            self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
 
         else:
             self.ui_wrapper.ui.StartStop.setText("Start Tracking")
@@ -138,7 +138,8 @@ class MainWindow(QMainWindow):
         self.ratioList = []
         self.elapsed_timer.start()
         self.timer.start(30)  # Update frame every 30 ms
-    
+        self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
+
         
     def stop_detection(self):
         self.timer.stop()
