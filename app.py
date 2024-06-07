@@ -443,7 +443,7 @@ class Ui_Home(object):
         #///////// PROGRESS BARS /////////
         self.min10 = QProgressBar(self.MainContent)
         self.min10.setGeometry(32, 498, 106, 43)
-        self.min10.setStyleSheet("QProgressBar{background-color:rgba(45,45,45,0.5);border-radius:21px;text-align:center;color:transparent;}QProgressBar::chunk{background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(52,30,63,255),stop:1 rgba(134,89,157,255));border-radius:21px;}")
+        self.min10.setStyleSheet("QProgressBar{background-color:rgba(45,45,45,0.5);border-radius:21px;text-align:center;color:transparent;}QProgressBar::chunk{background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(202,105,198,255),stop:1 rgba(134,89,157,255));border-radius:21px;}")
         self.min10.setRange(0, self.min10total)
         self.min10.setValue(self.min10actual)
         self.min10.setObjectName("min10")
@@ -470,7 +470,7 @@ class Ui_Home(object):
 
         self.min50 = QProgressBar(self.MainContent)
         self.min50.setGeometry(143, 498, 530, 43)
-        self.min50.setStyleSheet("QProgressBar{background-color:rgba(45,45,45,0.5);border-radius:21px;text-align:center;color:transparent;}QProgressBar::chunk{background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 rgba(2,19,51,255),stop:1 rgba(50,51,113,255));border-radius:21px;}")
+        self.min50.setStyleSheet("QProgressBar{background-color:rgba(45,45,45,0.5);border-radius:21px;text-align:center;color:transparent;}QProgressBar::chunk{background:qLineargradient(spread:pad, x1:0, y1:0, x2:1, x2:1, stop:0 #4E397A,stop:1 #D391F3);border-radius:21px;}")
         self.min50.setRange(0, self.min50total)
         self.min50.setValue(self.min50total)
         self.min50.setObjectName("min50")
