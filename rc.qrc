@@ -11,5 +11,6 @@
         <file>assets/close.png</file>
         <file>assets/min.png</file>
         <file>b2.png</file>
+        <file>assets/info.png</file>
     </qresource>
 </RCC>

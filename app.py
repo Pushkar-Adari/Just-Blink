@@ -6,6 +6,7 @@ from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
+import time
 from matplotlib.colors import LinearSegmentedColormap
 import cv2
 import cvzone
@@ -242,7 +243,7 @@ class Ui_Home(object):
         self.TitleBar.setGeometry(0, 0, 800, 36)
         self.TitleBar.setStyleSheet("QFrame{background-color: rgba(1, 1, 1, 1);border-bottom:1px solid #4C4C4C; border-top-left-radius: 20px; border-top-right-radius: 20px;}")
         self.TitleBar.setObjectName("TitleBar")
-
+        
         self.closeApp = QPushButton(self.TitleBar)
         self.closeApp.setGeometry(771, 7, 22, 22)
         self.closeApp.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);border-radius:10px;icon-size:12px;}QPushButton:hover{background-color: rgb(255, 0, 0);border-radius:10px;icon:url(:/newPrefix/assets/close.png);}")
@@ -402,7 +403,28 @@ class Ui_Home(object):
         self.TimerLabel.setFrameShadow(QFrame.Plain)
         self.TimerLabel.setWordWrap(False)
         self.TimerLabel.setObjectName("TimerLabel")
-
+        self.PomodoroInfo = QPushButton(self.MainContent)
+        self.PomodoroInfo.setGeometry(257, 459, 20, 20)
+        info = QIcon()
+        info.addPixmap(QtGui.QPixmap(":/newPrefix/assets/info.png"), QIcon.Normal, QIcon.Off)
+        self.PomodoroInfo.setIcon(info)
+        self.PomodoroInfo.setStyleSheet("background-color: #2D2D2D;border-radius:10px;icon-size:16px;")
+        self.PomodoroInfo.setObjectName("PomodoroInfo")
+        self.PomodoroInfo.setCursor(QCursor(Qt.PointingHandCursor))
+        self.PomodoroInfo.enterEvent = self.showPInfo
+        self.PomodoroInfo.leaveEvent = self.hidePInfo
+        self.PomodoroInfoText = QLabel(self.MainContent)
+        self.PomodoroInfoText.setGeometry(280, 417, 275, 80)
+        font = QFont()
+        font.setFamily("Poppins Light")
+        font.setBold(False)
+        font.setItalic(False)
+        self.PomodoroInfoText.setFont(font)
+        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: rgba(0,0,0,0);border-radius:14px;")
+        self.PomodoroInfoText.setFrameShape(QFrame.NoFrame)
+        self.PomodoroInfoText.setFrameShadow(QFrame.Plain)
+        self.PomodoroInfoText.setWordWrap(True)
+        self.PomodoroInfoText.setObjectName("PomodoroInfoText")
         self.Pause = QToolButton(self.MainContent)
         self.Pause.setGeometry(678, 498, 43, 43)
         self.Pause.setStyleSheet("background-color: rgb(19, 19, 19);border-radius:21px;icon-size:20px;")
@@ -511,6 +533,8 @@ class Ui_Home(object):
         self.min50.raise_()
         self.min10label.raise_()
         self.min50label.raise_()
+        self.PomodoroInfo.raise_()
+        self.PomodoroInfoText.raise_()
         Home.setCentralWidget(self.Central)
 
         self.retranslateUi(Home)
@@ -520,6 +544,17 @@ class Ui_Home(object):
         self.timer = QTimer()
         self.timer.setInterval(1000)
         self.timer.timeout.connect(self.update_progress)
+
+    def showPInfo(self,event):
+        time.sleep(0.3)
+        self.PomodoroInfoText.setText('Work for 50 mins then relax for 10\nReminds you to stretch your legs and give your eyes a break.')
+        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: #181818;border-radius:14px;text-align: center;padding:5px;")
+
+    def hidePInfo(self,event):
+        self.PomodoroInfoText.setText('')
+        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: rgba(0,0,0,0);border-radius:14px;")
+
+
 
     def retranslateUi(self, Home):
         _translate = QtCore.QCoreApplication.translate
