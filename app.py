@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import cv2
 import cvzone
+import csv
 from cvzone.FaceMeshModule import FaceMeshDetector
 import numpy as np
 import rc_rc
@@ -20,24 +21,39 @@ class MyMplCanvas(FigureCanvas):
         self.axes = fig.add_subplot(111)
         super(MyMplCanvas, self).__init__(fig)
         self.setParent(parent)
+        self.ui_wrapper = Ui_HomeWrapper(self)  
         self.plot()
-
+    def get_data_from_csv(self):
+        data = []
+        with open('Profiles/User 1/data.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                data.append(row)
+            data = data[-7:]
+            days = [entry['day'] for entry in data]
+            values = [int(entry['average_blinks']) for entry in data]
+        return days, values
+    def update_weekly_report(self):
+        days, values = self.get_data_from_csv()
+        yesterday = values[-1]
+        weekago = values[-7]
+        growth = ((yesterday-weekago)/weekago)*100
+        return growth
     def plot(self):
         self.axes.clear()
-        days = ["TU","WE","TH","FR","SA","SU","MO","T2"]
-        values = [16, 20, 21, 22, 23, 18, 23, 26]
-        bar_width = 0.55
+        days, values = self.get_data_from_csv()
+        bar_width = 0.5
         for i, value in enumerate(values):
             self.gradient_rect(i, 0, bar_width, value, '#8B5CA3', '#54427C')
         xtick_positions = np.arange(len(days)) + bar_width / 2
         self.axes.set_xticks(xtick_positions)
         xticklabels = [day[0] for day in days]
         self.axes.set_xticklabels(xticklabels)
-        yticks = self.axes.get_yticks()
+        yticks = [0, 5, 10, 15, 20, 25, 30]
         yticks = ['' if tick == 0 else f'{int(tick)}' for tick in yticks]
         self.axes.set_yticklabels(yticks, ha='center')
-        self.axes.set_yticklabels(yticks)
         self.axes.set_xlim(-0.5, len(days) - 0.5)
+        self.axes.set_ylim(0, 25)
         self.axes.set_ylabel('Average', fontstyle='italic', color='darkgrey')
         self.customize_zorder()
         average_value = sum(values) / len(values)
@@ -86,12 +102,12 @@ class MainWindow(QMainWindow):
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setFixedSize(800, 605)
         self.dragPos = QPoint()
-
         self.ui_wrapper = Ui_HomeWrapper(self)
         self.ui_wrapper.setupUi(self)
         self.elapsed_timer = QElapsedTimer()
         self.timer = QTimer()
-
+        self.get_data_from_csv()
+        self.update_weekly_report()
         self.graph_layout = QVBoxLayout(self.ui_wrapper.ui.Graph)
         self.ui_wrapper.ui.Graph.setLayout(self.graph_layout)
         self.canvas = MyMplCanvas(self.ui_wrapper.ui.Graph)
@@ -139,6 +155,25 @@ class MainWindow(QMainWindow):
         self.elapsed_timer.start()
         self.timer.start(30)  # Update frame every 30 ms
         self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
+    def get_data_from_csv(self):
+        data = []
+        with open('Profiles/User 1/data.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                data.append(row)
+            data = data[-7:]
+            days = [entry['day'] for entry in data]
+            values = [int(entry['average_blinks']) for entry in data]
+        return days, values
+    def update_weekly_report(self):
+        days, values = self.get_data_from_csv()
+        yesterday = values[-1]
+        weekago = values[-7]
+        growth = ((yesterday-weekago)/weekago)*100
+        self.ui_wrapper.ui.weeklyGrowth.setText(f"{growth:.1f}%")
+        if growth < 0:
+            self.ui_wrapper.ui.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);color:rgb(249,35,35);")
+
 
         
     def stop_detection(self):
@@ -178,6 +213,7 @@ class MainWindow(QMainWindow):
             if elapsed_time_min > 0:
                 avg_blinks_per_min = self.blinkCount / elapsed_time_min
                 self.ui_wrapper.ui.AvgBlinksPerMinute.setText(f"{avg_blinks_per_min:.0f}/MIN")
+
 
 
 class Ui_Home(object):
@@ -495,7 +531,7 @@ class Ui_Home(object):
         self.AvgBlinksPerMinute.setText(_translate("Home", "Not active"))
 
         self.weekHeading.setText(_translate("Home", "Weekly Report :"))
-        self.weeklyGrowth.setText(_translate("Home", "40%"))
+        self.weeklyGrowth.setText(_translate("Home", "00%"))
         self.TimerLabel.setText(_translate("Home", "Pomodoro Timer"))
         self.StartStop.setText(_translate("Home", "Start Tracking"))
 
@@ -568,7 +604,8 @@ class Ui_Home(object):
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
             self.mouseMoved.emit(event.globalPos())
-    
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
