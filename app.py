@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -88,6 +88,7 @@ class Ui_HomeWrapper(QObject):
 
         self.ui.TitleBar.mousePressEvent = self.mousePressEvent
         self.ui.TitleBar.mouseMoveEvent = self.mouseMoveEvent
+        
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -222,6 +223,7 @@ class Ui_Home(object):
     mouseMoved = pyqtSignal(QPoint)
 
     def setupUi(self, Home):
+        self.Home = Home
         #///////// VALUES ///////
         self.min50total = 3000
         self.min10total = 600
@@ -320,6 +322,7 @@ class Ui_Home(object):
         self.Setting.setIcon(icon1)
         self.Setting.setObjectName("Setting")
         self.Setting.setCursor(QCursor(Qt.PointingHandCursor))
+        self.Setting.clicked.connect(self.OpenSettings)
 
         #///////// AVERAGE /////////
         self.Avg = QFrame(self.MainContent)
@@ -632,15 +635,29 @@ class Ui_Home(object):
     def closeWindow(self):
         self.MainContent.window().close()
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.mousePressed.emit(event.globalPos())
 
-    def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.LeftButton:
-            self.mouseMoved.emit(event.globalPos())
+    def OpenSettings(self):
+        settings_dialog = QDialog(self.Home)
+        settings_dialog.setFixedSize(600, 583)
+        settings_dialog.setWindowTitle('Settings')
+        settings_dialog.setWindowFlags(Qt.FramelessWindowHint)
+        title_bar = QFrame(settings_dialog)
+        title_bar.setGeometry(0,0,600,36)
+        title_bar.setObjectName("STitleBar")
+        title_bar.setStyleSheet("QFrame{background-color: rgba(1, 1, 1, 1);border:1px solid #4C4C4C; border-top-left-radius: 20px; border-top-right-radius: 20px;}")
+        close_button = QPushButton(title_bar)
+        close_button.setGeometry(570, 7, 22, 22)
+        close_button.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);border-radius:10px;icon-size:12px;}QPushButton:hover{background-color: rgb(255, 0, 0);border-radius:10px;icon:url(:/newPrefix/assets/close.png);}")
+        close_button.clicked.connect(settings_dialog.close)
 
-
+        close_button.setCursor(QCursor(Qt.PointingHandCursor))
+        settingWindow = QFrame(settings_dialog)
+        settingWindow.setGeometry(0,36,600,547)
+        settingWindow.setStyleSheet("background-color:#1c1c1c;border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;")
+        
+        settings_dialog.move(100, 0)
+        settings_dialog.exec_()
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
