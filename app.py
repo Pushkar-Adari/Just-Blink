@@ -227,8 +227,8 @@ class Ui_Home(object):
         self.Home = Home
         self.settingconf = QSettings("JustBlink")
         #///////// VALUES ///////
-        self.min50total = int(self.settingconf.value("min50total", 3000))
-        self.min10total = int(self.settingconf.value("min10total", 600))
+        self.min50total = int(self.settingconf.value("min50total"))
+        self.min10total = int(self.settingconf.value("min10total"))
 
 
         self.min10actual = self.min10total
@@ -492,7 +492,7 @@ class Ui_Home(object):
         font.setItalic(False)
         self.min10label.setFont(font)
         self.min10label.setStyleSheet("QLabel{color:white;}")
-        self.min10label.setText("10m00s")
+        self.min10label.setText(self.settingconf.value("min10label"))
         self.min10label.setAlignment(Qt.AlignCenter)
 
         self.min50 = QProgressBar(self.MainContent)
@@ -519,7 +519,7 @@ class Ui_Home(object):
         font.setItalic(False)
         self.min50label.setFont(font)
         self.min50label.setStyleSheet("QLabel{color:white;}")
-        self.min50label.setText("50m00s")
+        self.min50label.setText(self.settingconf.value("min50label"))
         self.min50label.setAlignment(Qt.AlignCenter)
 
         self.Background.raise_()
@@ -614,8 +614,9 @@ class Ui_Home(object):
         self.min10actual = self.min10total
         self.min10.setValue(self.min10actual)
         self.Pause.setChecked(False)
-        self.min50label.setText("50m00s")
-        self.min10label.setText("10m00s")
+        self.min50label.setText(self.settingconf.value("min50label"))
+        self.min10label.setText(self.settingconf.value("min10label"))
+        
 
     def update_min50_time(self):
         if self.min50actual > 0:
@@ -789,10 +790,21 @@ class Ui_Home(object):
                 self.PomValue.setText("30 Mins")
                 self.min50total = 1500
                 self.min10total = 300
+                self.settingconf.setValue("min50label","25m00s")
+                self.settingconf.setValue("min10label","05m00s")
+
+                self.reset_timer()
             else:
                 self.PomValue.setText("60 Mins")
                 self.min50total = 3000
                 self.min10total = 600
+                self.settingconf.setValue("min50label","50m00s")
+                self.settingconf.setValue("min10label","10m00s")
+                self.reset_timer()
+                self.reset_progress_bar()
+        
+
+
             self.settingconf.setValue("PomValue",self.PomValue.text())
             self.settingconf.setValue("min50total",self.min50total)
             self.settingconf.setValue("min10total",self.min10total)
@@ -815,6 +827,9 @@ class Ui_Home(object):
 
 
         self.settings_dialog.exec_()
+    def reset_progress_bar(self):
+            self.min50.setValue(self.min50total)
+            self.min10.setValue(self.min10total)
         
 
     
