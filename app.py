@@ -223,10 +223,13 @@ class Ui_Home(object):
     mouseMoved = pyqtSignal(QPoint)
 
     def setupUi(self, Home):
+
         self.Home = Home
+        self.settingconf = QSettings("JustBlink")
         #///////// VALUES ///////
-        self.min50total = 3000
-        self.min10total = 600
+        self.min50total = int(self.settingconf.value("min50total", 3000))
+        self.min10total = int(self.settingconf.value("min10total", 600))
+
 
         self.min10actual = self.min10total
         self.min50actual = self.min50total
@@ -637,7 +640,6 @@ class Ui_Home(object):
     
 
     def OpenSettings(self):
-        self.settingconf = QSettings("JustBlink")
         self.settings_dialog = QDialog(self.Home)
         self.settings_dialog.setFixedSize(600, 481)
         self.settings_dialog.setWindowTitle('Settings')
