@@ -793,16 +793,17 @@ class Ui_Home(object):
                 self.settingconf.setValue("min50label","25m00s")
                 self.settingconf.setValue("min10label","05m00s")
 
-                self.reset_timer()
+                
             else:
                 self.PomValue.setText("60 Mins")
                 self.min50total = 3000
                 self.min10total = 600
                 self.settingconf.setValue("min50label","50m00s")
                 self.settingconf.setValue("min10label","10m00s")
-                self.reset_timer()
-                self.reset_progress_bar()
-        
+            self.min50.setRange(0, self.min50total)
+            self.min10.setRange(0, self.min10total)
+            self.reset_timer()
+
 
 
             self.settingconf.setValue("PomValue",self.PomValue.text())
@@ -827,9 +828,7 @@ class Ui_Home(object):
 
 
         self.settings_dialog.exec_()
-    def reset_progress_bar(self):
-            self.min50.setValue(self.min50total)
-            self.min10.setValue(self.min10total)
+
         
 
     
