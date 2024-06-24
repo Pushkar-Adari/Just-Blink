@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -227,6 +227,7 @@ class Ui_Home(object):
         #///////// VALUES ///////
         self.min50total = 3000
         self.min10total = 600
+
         self.min10actual = self.min10total
         self.min50actual = self.min50total
 
@@ -234,10 +235,8 @@ class Ui_Home(object):
         Home.setObjectName("Home")
         Home.setFixedSize(800, 605)
         Home.setAutoFillBackground(False)
-        Home.setStyleSheet("")
         Home.setAttribute(Qt.WA_TranslucentBackground, True)
         self.Central = QWidget(Home)
-        self.Central.setStyleSheet("")
         self.Central.setObjectName("Central")
 
         #///////// CUSTOM TITLE BAR /////////
@@ -635,28 +634,187 @@ class Ui_Home(object):
     def closeWindow(self):
         self.MainContent.window().close()
 
+    
 
     def OpenSettings(self):
-        settings_dialog = QDialog(self.Home)
-        settings_dialog.setFixedSize(600, 583)
-        settings_dialog.setWindowTitle('Settings')
-        settings_dialog.setWindowFlags(Qt.FramelessWindowHint)
-        title_bar = QFrame(settings_dialog)
-        title_bar.setGeometry(0,0,600,36)
-        title_bar.setObjectName("STitleBar")
-        title_bar.setStyleSheet("QFrame{background-color: rgba(1, 1, 1, 1);border:1px solid #4C4C4C; border-top-left-radius: 20px; border-top-right-radius: 20px;}")
-        close_button = QPushButton(title_bar)
-        close_button.setGeometry(570, 7, 22, 22)
-        close_button.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);border-radius:10px;icon-size:12px;}QPushButton:hover{background-color: rgb(255, 0, 0);border-radius:10px;icon:url(:/newPrefix/assets/close.png);}")
-        close_button.clicked.connect(settings_dialog.close)
+        self.settingconf = QSettings("JustBlink")
+        self.settings_dialog = QDialog(self.Home)
+        self.settings_dialog.setFixedSize(600, 481)
+        self.settings_dialog.setWindowTitle('Settings')
+        self.settings_dialog.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
+        self.settings_dialog.setModal(True)
+        self.settings_dialog.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.title_bar = QFrame(self.settings_dialog)
+        self.title_bar.setGeometry(0,0,600,36)
+        self.title_bar.setObjectName("STitleBar")
+        self.title_bar.setStyleSheet("QFrame{background-color: rgba(1, 1, 1, 1);border:1px solid #4C4C4C; border-top-left-radius: 20px; border-top-right-radius: 20px;}")
+        self.close_button = QPushButton(self.title_bar)
+        self.close_button.setGeometry(570, 7, 22, 22)
+        self.close_button.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);border-radius:10px;icon-size:12px;}QPushButton:hover{background-color: rgb(255, 0, 0);border-radius:10px;icon:url(:/newPrefix/assets/close.png);}")
+        self.close_button.clicked.connect(self.settings_dialog.close)
+        self.close_button.setCursor(QCursor(Qt.PointingHandCursor))
+        self.STitleLabel = QLabel(self.settings_dialog)
+        self.STitleLabel.setGeometry(220,0,159,36)
+        bfont = QFont()
+        bfont.setFamily("Poppins")
+        bfont.setPointSize(10)
+        bfont.setItalic(False)
+        self.STitleLabel.setFont(bfont)
+        hfont = QFont()
+        hfont.setFamily("Poppins")
+        hfont.setPointSize(10)
+        hfont.setItalic(False)
+        hfont.setBold(True)
+        lfont = QFont()
+        lfont.setFamily("Poppins Light")
+        lfont.setPointSize(9)
+        lfont.setItalic(True)
+        self.STitleLabel.setFont(bfont)
+        self.STitleLabel.setStyleSheet("QLabel{color:white;}")
+        self.STitleLabel.setText("Settings")
+        self.STitleLabel.setAlignment(Qt.AlignCenter)
 
-        close_button.setCursor(QCursor(Qt.PointingHandCursor))
-        settingWindow = QFrame(settings_dialog)
-        settingWindow.setGeometry(0,36,600,547)
-        settingWindow.setStyleSheet("background-color:#1c1c1c;border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;")
+        self.settingWindow = QFrame(self.settings_dialog)
+        self.settingWindow.setGeometry(0,36,600,445)
+        self.settingWindow.setStyleSheet("background-color:#1c1c1c;border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;")
+        screen_geometry = self.Home.screen().geometry()
+        dialog_geometry = self.settings_dialog.geometry()
+        x = (screen_geometry.width() - dialog_geometry.width()) // 2
+        y = (screen_geometry.height() - dialog_geometry.height()) // 2
+        self.settings_dialog.move(x, y)
+
+        self.StartLabel = QLabel(self.settingWindow)
+        self.StartLabel.setGeometry(32,23,222,47)
+        self.StartLabel.setFont(hfont)
+        self.StartLabel.setStyleSheet("QLabel{color:white;}")
+        self.StartLabel.setText("Start with Windows")
+
+        self.StartDesc = QLabel(self.settingWindow)
+        self.StartDesc.setGeometry(32,52,469,47)
+        self.StartDesc.setFont(bfont)
+        self.StartDesc.setStyleSheet("QLabel{color:white;}")
+        self.StartDesc.setText("Just Blink boots alongside windows to save you time")
+
+        self.DivisionLine = QFrame(self.settingWindow)
+        self.DivisionLine.setGeometry(32,99,537,1)
+        self.DivisionLine.setStyleSheet("background-color:#444444;")
+
+        self.DivisionLine1 = QFrame(self.settingWindow)
+        self.DivisionLine1.setGeometry(32,175,537,1)
+        self.DivisionLine1.setStyleSheet("background-color:#444444;")
+
+        self.DivisionLine2 = QFrame(self.settingWindow)
+        self.DivisionLine2.setGeometry(32,250,537,1)
+        self.DivisionLine2.setStyleSheet("background-color:#444444;")
+
+        self.DivisionLine3 = QFrame(self.settingWindow)
+        self.DivisionLine3.setGeometry(32,327,537,1)
+        self.DivisionLine3.setStyleSheet("background-color:#444444;")
+
+        self.TrayLabel = QLabel(self.settingWindow)
+        self.TrayLabel.setGeometry(32,99,222,47)
+        self.TrayLabel.setFont(hfont)
+        self.TrayLabel.setStyleSheet("QLabel{color:white;}")
+        self.TrayLabel.setText("Minimize to Tray")
+
+        self.TrayDesc = QLabel(self.settingWindow)
+        self.TrayDesc.setGeometry(32,139,469,24)
+        self.TrayDesc.setFont(bfont)
+        self.TrayDesc.setStyleSheet("QLabel{color:white;}")
+        self.TrayDesc.setText("Just Blink stays in the tray after you close the app")
+
+        self.NotiLabel = QLabel(self.settingWindow)
+        self.NotiLabel.setGeometry(32,175,222,47)
+        self.NotiLabel.setFont(hfont)
+        self.NotiLabel.setStyleSheet("QLabel{color:white;}")
+        self.NotiLabel.setText("Notification Sounds")
+
+        self.NotiDesc = QLabel(self.settingWindow)
+        self.NotiDesc.setGeometry(32,204,469,47)
+        self.NotiDesc.setFont(bfont)
+        self.NotiDesc.setStyleSheet("QLabel{color:white;}")
+        self.NotiDesc.setText("Play a sound along with notifications")
+
+        self.IntLabel = QLabel(self.settingWindow)
+        self.IntLabel.setGeometry(32,251,222,47)
+        self.IntLabel.setFont(hfont)
+        self.IntLabel.setStyleSheet("QLabel{color:white;}")
+        self.IntLabel.setText("Notification Interval")
+
+        self.IntDesc = QLabel(self.settingWindow)
+        self.IntDesc.setGeometry(32,280,434,47)
+        self.IntDesc.setFont(bfont)
+        self.IntDesc.setStyleSheet("QLabel{color:white;}")
+        self.IntDesc.setText("Minimum interval between notifications")
+
+        self.IntValue = QPushButton(self.settingWindow)
+        self.IntValue.setGeometry(462, 288,107,30)
+        self.IntValue.setStyleSheet("QPushButton{background-color:#2C2C2C;color:white;border-radius:15px;font-size:16px;font-family:\"Poppins\"}")
+        self.IntValue.setText(self.settingconf.value("IntValue", "3 Mins"))
+        def changeIntVal():
+            if self.IntValue.text()=="3 Mins":
+                self.IntValue.setText("5 Mins")
+            elif self.IntValue.text()=="5 Mins":
+                self.IntValue.setText("10 Mins")
+            elif self.IntValue.text()=="10 Mins":
+                self.IntValue.setText("15 Mins")
+            else:
+                self.IntValue.setText("3 Mins")
+            self.settingconf.setValue("IntValue",self.IntValue.text())
+        self.IntValue.clicked.connect(changeIntVal)
+
+
+        self.PomLabel = QLabel(self.settingWindow)
+        self.PomLabel.setGeometry(32,327,222,47)
+        self.PomLabel.setFont(hfont)
+        self.PomLabel.setStyleSheet("QLabel{color:white;}")
+        self.PomLabel.setText("Pomodoro Duration")
+
+        self.PomDesc = QLabel(self.settingWindow)
+        self.PomDesc.setGeometry(32,356,434,47)
+        self.PomDesc.setFont(bfont)
+        self.PomDesc.setStyleSheet("QLabel{color:white;}")
+        self.PomDesc.setText("Change the timer duration of Pomodoro Timer")
+
+        self.PomValue = QPushButton(self.settingWindow)
+        self.PomValue.setGeometry(462, 364,107,30)
+        self.PomValue.setStyleSheet("QPushButton{background-color:#2C2C2C;color:white;border-radius:15px;font-size:16px;font-family:\"Poppins\"}")
+        self.PomValue.setText(self.settingconf.value("PomValue", "60 Mins"))
+
+        def changePomVal():
+
+            if self.PomValue.text() == "60 Mins":
+                self.PomValue.setText("30 Mins")
+                self.min50total = 1500
+                self.min10total = 300
+            else:
+                self.PomValue.setText("60 Mins")
+                self.min50total = 3000
+                self.min10total = 600
+            self.settingconf.setValue("PomValue",self.PomValue.text())
+            self.settingconf.setValue("min50total",self.min50total)
+            self.settingconf.setValue("min10total",self.min10total)
+
+
+        self.PomValue.clicked.connect(changePomVal)
+
+        self.DivisionLine.raise_()
+        self.DivisionLine1.raise_()
+        self.DivisionLine2.raise_()
+        self.DivisionLine3.raise_()
+
+        self.EndText = QLabel(self.settingWindow)
+        self.EndText.setGeometry(185,410,229,24)
+        self.EndText.setFont(lfont)
+        self.EndText.setStyleSheet("QLabel {color:white;}")
+        self.EndText.setOpenExternalLinks(True)
+        self.EndText.setTextFormat(Qt.RichText)
+        self.EndText.setText('Built using <a href="https://www.qt.io" style = "text-decoration:underline;color:white;">Qt</a>. Icons by <a href="https://icons8.com" style = "text-decoration:underline;color:white;">Icons8</a>')
+
+
+        self.settings_dialog.exec_()
         
-        settings_dialog.move(100, 0)
-        settings_dialog.exec_()
+
     
 
 if __name__ == "__main__":
