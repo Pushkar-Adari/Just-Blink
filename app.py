@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLab
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+from qtwidgets import AnimatedToggle
+
 import matplotlib.pyplot as plt
 import time
 from matplotlib.colors import LinearSegmentedColormap
@@ -552,7 +554,7 @@ class Ui_Home(object):
 
     def showPInfo(self,event):
         time.sleep(0.3)
-        self.PomodoroInfoText.setText('Work for 50 mins then relax for 10\nReminds you to stretch your legs and give your eyes a break.')
+        self.PomodoroInfoText.setText('Divide your work into intervals with breaks to boost productivity.\nChange session length in settings.')
         self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: #181818;border-radius:14px;text-align: center;padding:5px;")
 
     def hidePInfo(self,event):
@@ -647,6 +649,7 @@ class Ui_Home(object):
         self.settings_dialog.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
         self.settings_dialog.setModal(True)
         self.settings_dialog.setAttribute(Qt.WA_TranslucentBackground, True)
+        
         self.title_bar = QFrame(self.settings_dialog)
         self.title_bar.setGeometry(0,0,600,36)
         self.title_bar.setObjectName("STitleBar")
@@ -697,7 +700,15 @@ class Ui_Home(object):
         self.StartDesc.setFont(bfont)
         self.StartDesc.setStyleSheet("QLabel{color:white;}")
         self.StartDesc.setText("Just Blink boots alongside windows to save you time")
+        def changeWakeToggleState():
+            self.settingconf.setValue("WakeToggle", self.WakeToggle.isChecked())
+        self.WakeToggle = AnimatedToggle(checked_color="#86599D", pulse_checked_color="#CA69C6", parent=self.settingWindow)
+        self.WakeToggleState = self.settingconf.value("WakeToggle",defaultValue=False,type=bool)
+        self.WakeToggle.setChecked(self.WakeToggleState)
+        self.WakeToggle.setGeometry(504, 50, 70, 50)
+        self.WakeToggle.clicked.connect(changeWakeToggleState)
 
+        
         self.DivisionLine = QFrame(self.settingWindow)
         self.DivisionLine.setGeometry(32,99,537,1)
         self.DivisionLine.setStyleSheet("background-color:#444444;")
@@ -726,6 +737,14 @@ class Ui_Home(object):
         self.TrayDesc.setStyleSheet("QLabel{color:white;}")
         self.TrayDesc.setText("Just Blink stays in the tray after you close the app")
 
+        def changeTrayToggleState():
+            self.settingconf.setValue("TrayToggle", self.TrayToggle.isChecked())
+        self.TrayToggle = AnimatedToggle(checked_color="#86599D", pulse_checked_color="#CA69C6", parent=self.settingWindow)
+        self.TrayToggleState = self.settingconf.value("TrayToggle",defaultValue=False,type=bool)
+        self.TrayToggle.setChecked(self.TrayToggleState)
+        self.TrayToggle.setGeometry(504, 126, 70, 50)
+        self.TrayToggle.clicked.connect(changeTrayToggleState)
+
         self.NotiLabel = QLabel(self.settingWindow)
         self.NotiLabel.setGeometry(32,175,222,47)
         self.NotiLabel.setFont(hfont)
@@ -737,6 +756,14 @@ class Ui_Home(object):
         self.NotiDesc.setFont(bfont)
         self.NotiDesc.setStyleSheet("QLabel{color:white;}")
         self.NotiDesc.setText("Play a sound along with notifications")
+
+        def changeNotiToggleState():
+            self.settingconf.setValue("NotiToggle", self.NotiToggle.isChecked())
+        self.NotiToggle = AnimatedToggle(checked_color="#86599D", pulse_checked_color="#CA69C6", parent=self.settingWindow)
+        self.NotiToggleState = self.settingconf.value("NotiToggle",defaultValue=False,type=bool)
+        self.NotiToggle.setChecked(self.NotiToggleState)
+        self.NotiToggle.setGeometry(504, 201, 70, 50)
+        self.NotiToggle.clicked.connect(changeNotiToggleState)
 
         self.IntLabel = QLabel(self.settingWindow)
         self.IntLabel.setGeometry(32,251,222,47)
@@ -783,6 +810,10 @@ class Ui_Home(object):
         self.PomValue.setGeometry(462, 364,107,30)
         self.PomValue.setStyleSheet("QPushButton{background-color:#2C2C2C;color:white;border-radius:15px;font-size:16px;font-family:\"Poppins\"}")
         self.PomValue.setText(self.settingconf.value("PomValue", "60 Mins"))
+        
+
+
+            
 
         def changePomVal():
 
@@ -817,6 +848,7 @@ class Ui_Home(object):
         self.DivisionLine1.raise_()
         self.DivisionLine2.raise_()
         self.DivisionLine3.raise_()
+        self.WakeToggle.raise_()
 
         self.EndText = QLabel(self.settingWindow)
         self.EndText.setGeometry(185,410,229,24)
