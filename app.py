@@ -6,7 +6,8 @@ from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from qtwidgets import AnimatedToggle
-
+import os
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import time
 from matplotlib.colors import LinearSegmentedColormap
@@ -17,6 +18,7 @@ from cvzone.FaceMeshModule import FaceMeshDetector
 import numpy as np
 import rc_rc
 
+
 class MyMplCanvas(FigureCanvas):
     def __init__(self, parent=None):
         plt.style.use('theme.mplstyle')
@@ -26,9 +28,26 @@ class MyMplCanvas(FigureCanvas):
         self.setParent(parent)
         self.ui_wrapper = Ui_HomeWrapper(self)  
         self.plot()
+    def createCSV(self,file_path):
+        if not os.path.exists(file_path):
+            with open(file_path, 'w', newline='') as file:
+                fieldnames = ['date', 'day', 'average_blinks']
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for i in range(7):
+                    date = datetime.now() - timedelta(days=i)
+                    writer.writerow({
+                        'date': date.strftime('%Y-%m-%d'),
+                        'day': date.strftime('%A'),
+                        'average_blinks': 1
+                    })
     def get_data_from_csv(self):
         data = []
-        with open('Profiles/User 1/data.csv', 'r') as file:
+        file_path = 'Profiles/User 1/data.csv'
+        self.createCSV(file_path)
+
+        with open(file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 data.append(row)
@@ -36,12 +55,7 @@ class MyMplCanvas(FigureCanvas):
             days = [entry['day'] for entry in data]
             values = [int(entry['average_blinks']) for entry in data]
         return days, values
-    def update_weekly_report(self):
-        days, values = self.get_data_from_csv()
-        yesterday = values[-1]
-        weekago = values[-7]
-        growth = ((yesterday-weekago)/weekago)*100
-        return growth
+    
     def plot(self):
         self.axes.clear()
         days, values = self.get_data_from_csv()
@@ -159,9 +173,25 @@ class MainWindow(QMainWindow):
         self.elapsed_timer.start()
         self.timer.start(30)  # Update frame every 30 ms
         self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
+    def createCSV(self,file_path):
+        if not os.path.exists(file_path):
+            with open(file_path, 'w', newline='') as file:
+                fieldnames = ['date', 'day', 'average_blinks']
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                
+                for i in range(9,-1,-1):
+                    date = datetime.now() - timedelta(days=i)
+                    writer.writerow({
+                        'date': date.strftime('%Y-%m-%d'),
+                        'day': date.strftime('%A'),
+                        'average_blinks': 1
+                    })
     def get_data_from_csv(self):
         data = []
-        with open('Profiles/User 1/data.csv', 'r') as file:
+        file_path = 'Profiles/User 1/data.csv'
+        self.createCSV(file_path)
+        with open(file_path, 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 data.append(row)
