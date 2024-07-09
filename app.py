@@ -211,10 +211,13 @@ class MainWindow(QMainWindow):
             yesterday = valid_values[-1]
             weekago = valid_values[0]
             growth = ((yesterday - weekago) / weekago) * 100
-        self.ui_wrapper.ui.weeklyGrowth.setText(f"{growth:.1f}%")
-        if growth < 0:
+        if growth > 0:
+            self.ui_wrapper.ui.weeklyGrowth.setText(f"+{growth:.1f}%")
+        elif growth < 0:
+            self.ui_wrapper.ui.weeklyGrowth.setText(f"{growth:.1f}%")
             self.ui_wrapper.ui.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);color:rgb(249,35,35);")
         elif growth == 0:
+            self.ui_wrapper.ui.weeklyGrowth.setText(f"{growth:.1f}%")
             self.ui_wrapper.ui.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);color:rgb(255,255,255);")
 
 
