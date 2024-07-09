@@ -210,9 +210,8 @@ class MainWindow(QMainWindow):
 
 
         
-    def stop_detection(self):
-        self.timer.stop()
-        self.cap.release()
+    
+
     
     def update_frame(self):
         success, img = self.cap.read()
@@ -245,8 +244,42 @@ class MainWindow(QMainWindow):
             elapsed_time_sec = self.elapsed_timer.elapsed() / 1000  
             elapsed_time_min = elapsed_time_sec / 60  
             if elapsed_time_min > 0:
-                avg_blinks_per_min = self.blinkCount / elapsed_time_min
-                self.ui_wrapper.ui.AvgBlinksPerMinute.setText(f"{avg_blinks_per_min:.0f}/MIN")
+                self.avg_blinks_per_min = self.blinkCount / elapsed_time_min
+                self.ui_wrapper.ui.AvgBlinksPerMinute.setText(f"{self.avg_blinks_per_min:.0f}/MIN")
+    def save_blinks_to_csv(self):
+        file_path = 'Profiles/User 1/data.csv'
+        today = datetime.today().strftime('%Y-%m-%d')
+        day = datetime.today().strftime('%A')
+        new_entry = {'date': today, 'day': day, 'average_blinks': int(self.avg_blinks_per_min)}
+        entries = []
+        try:
+            with open(file_path, 'r', newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    entries.append(row)
+        except FileNotFoundError:
+            pass
+        
+        # Check if today's entry exists and update it
+        entry_exists = False
+        for entry in entries:
+            if entry['date'] == today:
+                entry['day'] = day
+                entry['average_blinks'] = new_entry['average_blinks']
+                entry_exists = True
+                break
+        if not entry_exists:
+            entries.append(new_entry)
+        with open(file_path, 'w', newline='') as file:
+            fieldnames = ['date', 'day', 'average_blinks']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(entries)
+    def stop_detection(self):
+
+        self.timer.stop()
+        self.cap.release()
+        self.save_blinks_to_csv()
 
 
 
