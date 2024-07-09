@@ -201,12 +201,22 @@ class MainWindow(QMainWindow):
         return days, values
     def update_weekly_report(self):
         days, values = self.get_data_from_csv()
-        yesterday = values[-1]
-        weekago = values[-7]
-        growth = ((yesterday-weekago)/weekago)*100
+        last_7_days = values[-7:]
+    
+        valid_values = [value for value in last_7_days if value != 1]
+        
+        if len(valid_values) < 2:
+            growth = 0
+        else:
+            yesterday = valid_values[-1]
+            weekago = valid_values[0]
+            growth = ((yesterday - weekago) / weekago) * 100
         self.ui_wrapper.ui.weeklyGrowth.setText(f"{growth:.1f}%")
         if growth < 0:
             self.ui_wrapper.ui.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);color:rgb(249,35,35);")
+        elif growth == 0:
+            self.ui_wrapper.ui.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);color:rgb(255,255,255);")
+
 
 
         
