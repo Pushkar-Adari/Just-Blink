@@ -1,0 +1,8 @@
+logs/
+.venv
+assets/
+app.ui
+rc.qrc
+b2.png
+notes.txt
+__pycache__/
