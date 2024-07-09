@@ -44,7 +44,7 @@ class MyMplCanvas(FigureCanvas):
                     })
     def get_data_from_csv(self):
         data = []
-        file_path = 'Profiles/User 1/data.csv'
+        file_path = 'Profiles/User/data.csv'
         self.createCSV(file_path)
 
         with open(file_path, 'r') as file:
@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
                     })
     def get_data_from_csv(self):
         data = []
-        file_path = 'Profiles/User 1/data.csv'
+        file_path = 'Profiles/User/data.csv'
         self.createCSV(file_path)
         with open(file_path, 'r') as file:
             reader = csv.DictReader(file)
@@ -260,7 +260,7 @@ class MainWindow(QMainWindow):
                 self.avg_blinks_per_min = self.blinkCount / elapsed_time_min
                 self.ui_wrapper.ui.AvgBlinksPerMinute.setText(f"{self.avg_blinks_per_min:.0f}/MIN")
     def save_blinks_to_csv(self):
-        file_path = 'Profiles/User 1/data.csv'
+        file_path = 'Profiles/User/data.csv'
         today = datetime.today().strftime('%Y-%m-%d')
         day = datetime.today().strftime('%A')
         new_entry = {'date': today, 'day': day, 'average_blinks': int(self.avg_blinks_per_min)}
