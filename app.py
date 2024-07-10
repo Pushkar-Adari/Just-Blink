@@ -6,6 +6,7 @@ from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from qtwidgets import AnimatedToggle
+from plyer import notification
 import os
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
@@ -17,7 +18,7 @@ import csv
 from cvzone.FaceMeshModule import FaceMeshDetector
 import numpy as np
 import rc_rc
-
+import threading
 
 class MyMplCanvas(FigureCanvas):
     def __init__(self, parent=None):
@@ -132,6 +133,12 @@ class MainWindow(QMainWindow):
         self.graph_layout.addWidget(self.canvas)
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
+        self.min_notification_interval = 180
+        self.avg_blinks_per_min = 16
+
+        self.notification_thread = threading.Thread(target=self.send_blink_reminder)
+        self.notification_thread.daemon = True  # so the thread dies when the main program dies
+        self.notification_thread.start()
         #INITIALIZE CV
         self.cap = cv2.VideoCapture(0)
         self.detector = FaceMeshDetector(maxFaces=1)
@@ -173,6 +180,13 @@ class MainWindow(QMainWindow):
         self.elapsed_timer.start()
         self.timer.start(30)  # Update frame every 30 ms
         self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
+        start_reminder = notification.notify(
+            title = 'Just Blink',
+            message = 'We are watching you lol',
+            app_icon = None,
+            timeout = 10,
+            toast = False
+        )
     def createCSV(self,file_path):
         if not os.path.exists(file_path):
             with open(file_path, 'w', newline='') as file:
@@ -259,6 +273,22 @@ class MainWindow(QMainWindow):
             if elapsed_time_min > 0:
                 self.avg_blinks_per_min = self.blinkCount / elapsed_time_min
                 self.ui_wrapper.ui.AvgBlinksPerMinute.setText(f"{self.avg_blinks_per_min:.0f}/MIN")
+            
+        
+    def send_blink_reminder(self):
+        while True:
+            try:
+                if self.avg_blinks_per_min <= 15:
+                    notification.notify(
+                    title = 'Just Blink',
+                    message = 'Reminder to blink',
+                    app_icon = None,
+                    timeout = 10,
+                    toast = False
+                    )
+                time.sleep(self.min_notification_interval)
+            except Exception as e:
+                print(f"An error occurred: {e}")
     def save_blinks_to_csv(self):
         file_path = 'Profiles/User/data.csv'
         today = datetime.today().strftime('%Y-%m-%d')
@@ -676,6 +706,13 @@ class Ui_Home(object):
         self.min50.setValue(self.min50actual)
         if self.min50actual <= 0:
             self.update_restProgress()
+            work_over = notification.notify(
+                title = 'Just Blink',
+                message = "You deserve a break :)",
+                app_icon = None,
+                timeout = 10,
+                toast = False
+            )
         self.min50label.setText(self.update_min50_time())
 
     def update_restProgress(self):
@@ -683,6 +720,13 @@ class Ui_Home(object):
         self.min10.setValue(self.min10actual)
         if self.min10actual <= 0:
             self.reset_timer()
+            break_over = notification.notify(
+                title = 'Just Blink',
+                message = 'Feeling better?. Time to start another session.',
+                app_icon = None,
+                timeout = 10,
+                toast = False
+            )
         self.min10label.setText(self.update_min10_time())
 
     def reset_timer(self):
@@ -860,6 +904,7 @@ class Ui_Home(object):
         def changeIntVal():
             if self.IntValue.text()=="3 Mins":
                 self.IntValue.setText("5 Mins")
+
             elif self.IntValue.text()=="5 Mins":
                 self.IntValue.setText("10 Mins")
             elif self.IntValue.text()=="10 Mins":
@@ -888,7 +933,7 @@ class Ui_Home(object):
         self.PomValue.setText(self.settingconf.value("PomValue", "60 Mins"))
         
 
-
+        
             
 
         def changePomVal():
