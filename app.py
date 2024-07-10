@@ -384,14 +384,14 @@ class Ui_Home(object):
         self.Logo.setObjectName("Logo")
 
         #///////// PROFILE /////////
-        self.Profile = QToolButton(self.MainContent)
-        self.Profile.setGeometry(677, 33, 43, 43)
-        self.Profile.setStyleSheet("background-color: rgb(19, 19, 19);border-radius:21px;icon-size:25px;")
-        icon = QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/newPrefix/assets/user.png"), QIcon.Normal, QIcon.Off)
-        self.Profile.setIcon(icon)
-        self.Profile.setObjectName("Profile")
-        self.Profile.setCursor(QCursor(Qt.PointingHandCursor))
+        # self.Profile = QToolButton(self.MainContent)
+        # self.Profile.setGeometry(677, 33, 43, 43)
+        # self.Profile.setStyleSheet("background-color: rgb(19, 19, 19);border-radius:21px;icon-size:25px;")
+        # icon = QIcon()
+        # icon.addPixmap(QtGui.QPixmap(":/newPrefix/assets/user.png"), QIcon.Normal, QIcon.Off)
+        # self.Profile.setIcon(icon)
+        # self.Profile.setObjectName("Profile")
+        # self.Profile.setCursor(QCursor(Qt.PointingHandCursor))
 
         #///////// SETTINGS /////////
         self.Setting = QToolButton(self.MainContent)
@@ -531,12 +531,12 @@ class Ui_Home(object):
         self.Reset.clicked.connect(self.reset_timer)
         self.Reset.setCursor(QCursor(Qt.PointingHandCursor))
 
-        self.Name = QFrame(self.MainContent)
-        self.Name.setGeometry(586, 38, 119, 32)
-        self.Name.setStyleSheet("background-color: rgba(19, 19, 19, 0.7);border-radius:15px;")
-        self.Name.setFrameShape(QFrame.StyledPanel)
-        self.Name.setFrameShadow(QFrame.Raised)
-        self.Name.setObjectName("Name")
+        # self.Name = QFrame(self.MainContent)
+        # self.Name.setGeometry(586, 38, 119, 32)
+        # self.Name.setStyleSheet("background-color: rgba(19, 19, 19, 0.7);border-radius:15px;")
+        # self.Name.setFrameShape(QFrame.StyledPanel)
+        # self.Name.setFrameShadow(QFrame.Raised)
+        # self.Name.setObjectName("Name")
 
         self.Background = QFrame(self.MainContent)
         self.Background.setGeometry(0, 0, 800, 569)
@@ -601,7 +601,7 @@ class Ui_Home(object):
         self.min50label.setAlignment(Qt.AlignCenter)
 
         self.Background.raise_()
-        self.Name.raise_()
+        # self.Name.raise_()
         self.StartStop.raise_()
         self.Logo.raise_()
         self.Setting.raise_()
@@ -611,7 +611,7 @@ class Ui_Home(object):
         self.TimerLabel.raise_()
         self.Pause.raise_()
         self.Reset.raise_()
-        self.Profile.raise_()
+        # self.Profile.raise_()
         self.min10.raise_()
         self.min50.raise_()
         self.min10label.raise_()
@@ -643,7 +643,7 @@ class Ui_Home(object):
         _translate = QtCore.QCoreApplication.translate
         Home.setWindowTitle(_translate("Home", "Just Blink"))
         self.Logo.setText(_translate("Home", "Just Blink"))
-        self.Profile.setText(_translate("Home", "..."))
+        # self.Profile.setText(_translate("Home", "..."))
         self.Setting.setText(_translate("Home", "..."))
         self.AverageHeading.setText(_translate("Home", "Average Blinks:"))
         self.AvgBlinksPerMinute.setText(_translate("Home", "Not active"))
