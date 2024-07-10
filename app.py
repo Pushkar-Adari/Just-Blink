@@ -133,7 +133,8 @@ class MainWindow(QMainWindow):
         self.graph_layout.addWidget(self.canvas)
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
-        self.min_notification_interval = 180
+        self.ui_wrapper.ui.settingconf.setValue('noti_int','180')
+        self.min_notification_interval = int(self.ui_wrapper.ui.settingconf.value('noti_int'))
         self.avg_blinks_per_min = 16
 
         self.notification_thread = threading.Thread(target=self.send_blink_reminder)
@@ -904,13 +905,16 @@ class Ui_Home(object):
         def changeIntVal():
             if self.IntValue.text()=="3 Mins":
                 self.IntValue.setText("5 Mins")
-
+                self.settingconf.setValue('noti_int','300')
             elif self.IntValue.text()=="5 Mins":
                 self.IntValue.setText("10 Mins")
+                self.settingconf.setValue('noti_int','600')
             elif self.IntValue.text()=="10 Mins":
                 self.IntValue.setText("15 Mins")
+                self.settingconf.setValue('noti_int','900')
             else:
                 self.IntValue.setText("3 Mins")
+                self.settingconf.setValue('noti_int','180')
             self.settingconf.setValue("IntValue",self.IntValue.text())
         self.IntValue.clicked.connect(changeIntVal)
 
