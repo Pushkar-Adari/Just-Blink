@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget, QSlider
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
         self.ui_wrapper.ui.settingconf.setValue('noti_int','180')
-        self.min_notification_interval = int(self.ui_wrapper.ui.settingconf.value('noti_int'))
+        self.min_notification_interval = int(self.ui_wrapper.ui.settingconf.value('noti_int','180'))
         self.avg_blinks_per_min = 16
 
         self.notification_thread = threading.Thread(target=self.send_blink_reminder)
@@ -260,7 +260,8 @@ class MainWindow(QMainWindow):
             if len(self.ratioList) > 7:
                 self.ratioList.pop(0)
             avgRatio = sum(self.ratioList) / len(self.ratioList)
-            dynamic_limit = avgRatio * 0.9
+            dynamic_limit = avgRatio * float(self.ui_wrapper.ui.settingconf.value('SensValue',0.9))
+
             if ratio < dynamic_limit and self.counter == 0:
                 self.blinkCount += 1
                 self.counter = 1
@@ -866,25 +867,62 @@ class Ui_Home(object):
         self.TrayToggle.setGeometry(504, 126, 70, 50)
         self.TrayToggle.clicked.connect(changeTrayToggleState)
 
-        self.NotiLabel = QLabel(self.settingWindow)
-        self.NotiLabel.setGeometry(32,175,222,47)
-        self.NotiLabel.setFont(hfont)
-        self.NotiLabel.setStyleSheet("QLabel{color:white;}")
-        self.NotiLabel.setText("Notification Sounds")
+        self.SensLabel = QLabel(self.settingWindow)
+        self.SensLabel.setGeometry(32,175,222,47)
+        self.SensLabel.setFont(hfont)
+        self.SensLabel.setStyleSheet("QLabel{color:white;}")
+        self.SensLabel.setText("Detection Sensitivity")
 
-        self.NotiDesc = QLabel(self.settingWindow)
-        self.NotiDesc.setGeometry(32,204,469,47)
-        self.NotiDesc.setFont(bfont)
-        self.NotiDesc.setStyleSheet("QLabel{color:white;}")
-        self.NotiDesc.setText("Play a sound along with notifications")
+        self.SensDesc = QLabel(self.settingWindow)
+        self.SensDesc.setGeometry(32,204,469,47)
+        self.SensDesc.setFont(bfont)
+        self.SensDesc.setStyleSheet("QLabel{color:white;}")
+        self.SensDesc.setText("Change sensitivity of blink detection to suit you")
 
-        def changeNotiToggleState():
-            self.settingconf.setValue("NotiToggle", self.NotiToggle.isChecked())
-        self.NotiToggle = AnimatedToggle(checked_color="#86599D", pulse_checked_color="#CA69C6", parent=self.settingWindow)
-        self.NotiToggleState = self.settingconf.value("NotiToggle",defaultValue=False,type=bool)
-        self.NotiToggle.setChecked(self.NotiToggleState)
-        self.NotiToggle.setGeometry(504, 201, 70, 50)
-        self.NotiToggle.clicked.connect(changeNotiToggleState)
+        self.SensSlider = QSlider(Qt.Horizontal, self.settingWindow)
+        self.SensSlider.setGeometry(462, 212,107,30)
+        self.SensSlider.setMinimum(85)
+        self.SensSlider.setMaximum(95) 
+
+        self.SensSlider.setTickPosition(QSlider.TicksBelow)
+        self.SensSlider.setTickInterval(1)
+        self.SensSlider.setSingleStep(1)
+        self.SensSlider.setFixedWidth(107)
+        self.SensSlider.setValue(self.settingconf.value('SensSliderValue',91))
+        
+        self.SensSlider.setStyleSheet("""
+            QSlider::groove:horizontal {
+                border: 1px solid #2c2c2c;
+                height: 2px;
+                
+            }QSlider::handle:horizontal {
+                background: white;
+                width: 14px;
+                height: 14px;
+                margin: -6px 0;
+                border-radius: 7px;
+            }QSlider::add-page:horizontal {
+                background: #404040;
+            }QSlider::sub-page:horizontal {
+                background: #404040;
+            }QSlider::tick:horizontal {
+                background: #fff;
+                height: 2px;
+                width: 1px;
+            }
+        """)
+
+
+        def changeSensVal(value):
+            Sensi = value/100
+
+            self.settingconf.setValue("SensValue",Sensi)
+            self.settingconf.setValue("SensSliderValue",value)
+
+            self.SensSlider.setValue(self.settingconf.value('SensSliderValue'))
+        self.SensSlider.valueChanged.connect(changeSensVal)
+
+        
 
         self.IntLabel = QLabel(self.settingWindow)
         self.IntLabel.setGeometry(32,251,222,47)
@@ -960,12 +998,9 @@ class Ui_Home(object):
             self.min10.setRange(0, self.min10total)
             self.reset_timer()
 
-
-
             self.settingconf.setValue("PomValue",self.PomValue.text())
             self.settingconf.setValue("min50total",self.min50total)
             self.settingconf.setValue("min10total",self.min10total)
-
 
         self.PomValue.clicked.connect(changePomVal)
 
@@ -983,12 +1018,7 @@ class Ui_Home(object):
         self.EndText.setTextFormat(Qt.RichText)
         self.EndText.setText('Built using <a href="https://www.qt.io" style = "text-decoration:underline;color:white;">Qt</a>. Icons by <a href="https://icons8.com" style = "text-decoration:underline;color:white;">Icons8</a>')
 
-
         self.settings_dialog.exec_()
-
-        
-
-    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
