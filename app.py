@@ -182,8 +182,8 @@ class MainWindow(QMainWindow):
         self.timer.start(30)  # Update frame every 30 ms
         self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
         start_reminder = notification.notify(
-            title = 'Just Blink',
-            message = 'We are watching you lol',
+            title = None,
+            message = 'Just Blink has started Tracking',
             app_icon = None,
             timeout = 10,
             toast = False
@@ -282,8 +282,8 @@ class MainWindow(QMainWindow):
             try:
                 if self.avg_blinks_per_min <= 15:
                     notification.notify(
-                    title = 'Just Blink',
-                    message = 'Reminder to blink',
+                    title = None,
+                    message = "You haven't blinked in a while!",
                     app_icon = None,
                     timeout = 10,
                     toast = False
@@ -351,7 +351,9 @@ class Ui_Home(object):
         Home.setAttribute(Qt.WA_TranslucentBackground, True)
         self.Central = QWidget(Home)
         self.Central.setObjectName("Central")
-
+        
+        
+        
         #///////// CUSTOM TITLE BAR /////////
         self.TitleBar = QFrame(self.Central)
         self.TitleBar.setGeometry(0, 0, 800, 36)
@@ -398,7 +400,7 @@ class Ui_Home(object):
         font.setItalic(False)
         self.StartStop.setFont(font)
         self.StartStop.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.StartStop.setStyleSheet("QPushButton{background-color: rgba(1,50,32,0.5);border-radius:20;color: rgb(10,255,35);font: 63 14.5pt \"Poppins SemiBold\";}QPushButton:checked{background-color: rgba(43, 11, 11,0.5);border-radius:20;color: rgb(249,35,35);font: 63 14.5pt \"Poppins SemiBold\";}")
+        self.StartStop.setStyleSheet("QPushButton{background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:0 rgba(1, 173, 59, 0.3),stop:1 rgba(1, 50, 32, 0.3));border-radius:20;color: rgb(10,255,35);font: 63 14.5pt \"Poppins SemiBold\";}QPushButton:checked{background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:0 rgba(64, 16, 16, 0.3),stop:1 rgba(184, 19, 19, 0.3));border-radius:20;color: rgb(249,35,35);font: 63 14.5pt \"Poppins SemiBold\";}")
         self.StartStop.setCheckable(True)
         self.StartStop.setChecked(False)
         self.StartStop.setObjectName("StartStop")
@@ -518,6 +520,7 @@ class Ui_Home(object):
         self.TimerLabel.setFrameShadow(QFrame.Plain)
         self.TimerLabel.setWordWrap(False)
         self.TimerLabel.setObjectName("TimerLabel")
+        
         self.PomodoroInfo = QPushButton(self.MainContent)
         self.PomodoroInfo.setGeometry(257, 459, 20, 20)
         info = QIcon()
@@ -528,6 +531,7 @@ class Ui_Home(object):
         self.PomodoroInfo.setCursor(QCursor(Qt.PointingHandCursor))
         self.PomodoroInfo.enterEvent = self.showPInfo
         self.PomodoroInfo.leaveEvent = self.hidePInfo
+        
         self.PomodoroInfoText = QLabel(self.MainContent)
         self.PomodoroInfoText.setGeometry(280, 417, 275, 80)
         font = QFont()
@@ -540,6 +544,7 @@ class Ui_Home(object):
         self.PomodoroInfoText.setFrameShadow(QFrame.Plain)
         self.PomodoroInfoText.setWordWrap(True)
         self.PomodoroInfoText.setObjectName("PomodoroInfoText")
+        
         self.Pause = QToolButton(self.MainContent)
         self.Pause.setGeometry(678, 498, 43, 43)
         self.Pause.setStyleSheet("background-color: rgb(19, 19, 19);border-radius:21px;icon-size:20px;")
@@ -674,6 +679,7 @@ class Ui_Home(object):
     def retranslateUi(self, Home):
         _translate = QtCore.QCoreApplication.translate
         Home.setWindowTitle(_translate("Home", "Just Blink"))
+
         self.Logo.setText(_translate("Home", "Just Blink"))
         # self.Profile.setText(_translate("Home", "..."))
         self.Setting.setText(_translate("Home", "..."))
@@ -710,7 +716,7 @@ class Ui_Home(object):
             self.update_restProgress()
             work_over = notification.notify(
                 title = 'Just Blink',
-                message = "You deserve a break :)",
+                message = "You've been working hard. Let's take a break",
                 app_icon = None,
                 timeout = 10,
                 toast = False
@@ -724,7 +730,7 @@ class Ui_Home(object):
             self.reset_timer()
             break_over = notification.notify(
                 title = 'Just Blink',
-                message = 'Feeling better?. Time to start another session.',
+                message = 'Feeling productive?. Time to start another session.',
                 app_icon = None,
                 timeout = 10,
                 toast = False
@@ -776,11 +782,13 @@ class Ui_Home(object):
         self.title_bar.setGeometry(0,0,600,36)
         self.title_bar.setObjectName("STitleBar")
         self.title_bar.setStyleSheet("QFrame{background-color: rgba(1, 1, 1, 1);border:1px solid #4C4C4C; border-top-left-radius: 20px; border-top-right-radius: 20px;}")
+        
         self.close_button = QPushButton(self.title_bar)
         self.close_button.setGeometry(570, 7, 22, 22)
         self.close_button.setStyleSheet("QPushButton{background-color: rgb(48, 48, 48);border-radius:10px;icon-size:12px;}QPushButton:hover{background-color: rgb(255, 0, 0);border-radius:10px;icon:url(:/newPrefix/assets/close.png);}")
         self.close_button.clicked.connect(self.settings_dialog.close)
         self.close_button.setCursor(QCursor(Qt.PointingHandCursor))
+        
         self.STitleLabel = QLabel(self.settings_dialog)
         self.STitleLabel.setGeometry(220,0,159,36)
         bfont = QFont()
@@ -868,7 +876,7 @@ class Ui_Home(object):
         self.TrayToggle.clicked.connect(changeTrayToggleState)
 
         self.SensLabel = QLabel(self.settingWindow)
-        self.SensLabel.setGeometry(32,175,222,47)
+        self.SensLabel.setGeometry(32,175,222,40)
         self.SensLabel.setFont(hfont)
         self.SensLabel.setStyleSheet("QLabel{color:white;}")
         self.SensLabel.setText("Detection Sensitivity")
@@ -973,10 +981,6 @@ class Ui_Home(object):
         self.PomValue.setGeometry(462, 364,107,30)
         self.PomValue.setStyleSheet("QPushButton{background-color:#2C2C2C;color:white;border-radius:15px;font-size:16px;font-family:\"Poppins\"}")
         self.PomValue.setText(self.settingconf.value("PomValue", "60 Mins"))
-        
-
-        
-            
 
         def changePomVal():
 
@@ -987,7 +991,6 @@ class Ui_Home(object):
                 self.settingconf.setValue("min50label","25m00s")
                 self.settingconf.setValue("min10label","05m00s")
 
-                
             else:
                 self.PomValue.setText("60 Mins")
                 self.min50total = 3000
