@@ -714,22 +714,27 @@ class Ui_Home(object):
         self.min50.setValue(self.min50actual)
         if self.min50actual <= 0:
             self.update_restProgress()
-            work_over = notification.notify(
-                title = 'Just Blink',
-                message = "You've been working hard. Let's take a break",
-                app_icon = None,
-                timeout = 10,
-                toast = False
-            )
         self.min50label.setText(self.update_min50_time())
+        
 
+    def sendWorkNotif(self):
+         notification.notify(
+                    title = None,
+                    message = "Looks like You've been working hard. Time for a break",
+                    app_icon = None,
+                    timeout = 10,
+                    toast = False
+                )
     def update_restProgress(self):
+        #condition is satisified only once until reset, i.e when this function is first called
+        if self.min10actual == self.min10total: 
+            self.sendWorkNotif()
         self.min10actual -= 1
         self.min10.setValue(self.min10actual)
         if self.min10actual <= 0:
             self.reset_timer()
             break_over = notification.notify(
-                title = 'Just Blink',
+                title = None,
                 message = 'Feeling productive?. Time to start another session.',
                 app_icon = None,
                 timeout = 10,
