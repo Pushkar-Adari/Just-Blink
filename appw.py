@@ -133,8 +133,8 @@ class MainWindow(QMainWindow):
         self.graph_layout.addWidget(self.canvas)
         self.mousePressed = self.ui_wrapper.mousePressed
         self.mouseMoved = self.ui_wrapper.mouseMoved
-        self.ui_wrapper.ui.settingconf.setValue('noti_int',180)
-        self.min_notification_interval = int(self.ui_wrapper.ui.settingconf.value('noti_int',180))
+        self.ui_wrapper.ui.settingconf.setValue('noti_int','180')
+        self.min_notification_interval = int(self.ui_wrapper.ui.settingconf.value('noti_int','180'))
         self.avg_blinks_per_min = 16
 
         self.notification_thread = threading.Thread(target=self.send_blink_reminder)
@@ -182,7 +182,7 @@ class MainWindow(QMainWindow):
         self.timer.start(30)  # Update frame every 30 ms
         self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
         start_reminder = notification.notify(
-            title = 'None',
+            title = None,
             message = 'Just Blink has started Tracking',
             app_icon = None,
             timeout = 10,
@@ -282,7 +282,7 @@ class MainWindow(QMainWindow):
             try:
                 if self.avg_blinks_per_min <= 15:
                     notification.notify(
-                    title = 'None',
+                    title = None,
                     message = "You haven't blinked in a while!",
                     app_icon = None,
                     timeout = 10,
@@ -719,7 +719,7 @@ class Ui_Home(object):
 
     def sendWorkNotif(self):
          notification.notify(
-                    title = 'None',
+                    title = None,
                     message = "Looks like You've been working hard. Time for a break",
                     app_icon = None,
                     timeout = 10,
@@ -734,7 +734,7 @@ class Ui_Home(object):
         if self.min10actual <= 0:
             self.reset_timer()
             break_over = notification.notify(
-                title = 'None',
+                title = None,
                 message = 'Feeling productive?. Time to start another session.',
                 app_icon = None,
                 timeout = 10,
@@ -956,16 +956,16 @@ class Ui_Home(object):
         def changeIntVal():
             if self.IntValue.text()=="3 Mins":
                 self.IntValue.setText("5 Mins")
-                self.settingconf.setValue('noti_int',300)
+                self.settingconf.setValue('noti_int','300')
             elif self.IntValue.text()=="5 Mins":
                 self.IntValue.setText("10 Mins")
-                self.settingconf.setValue('noti_int',600)
+                self.settingconf.setValue('noti_int','600')
             elif self.IntValue.text()=="10 Mins":
                 self.IntValue.setText("15 Mins")
-                self.settingconf.setValue('noti_int',900)
+                self.settingconf.setValue('noti_int','900')
             else:
                 self.IntValue.setText("3 Mins")
-                self.settingconf.setValue('noti_int',180)
+                self.settingconf.setValue('noti_int','180')
             self.settingconf.setValue("IntValue",self.IntValue.text())
         self.IntValue.clicked.connect(changeIntVal)
 
