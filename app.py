@@ -1,7 +1,8 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtTest import QTest
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget, QSlider
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget, QSlider, QSystemTrayIcon, QMenu, QAction
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -148,6 +149,33 @@ class MainWindow(QMainWindow):
         self.blinkCount = 0
         self.counter = 0
         
+        #System tray Menu
+
+        self.appIcon = QIcon("assets/logos/48x48.ico")
+        self.trayIco = QSystemTrayIcon(self)
+        self.trayIco.setIcon(self.appIcon)
+        self.trayIco.setVisible(True)
+        self.trayMenu = QMenu(self)
+        op1 = QAction("Show/Hide",self)
+        # op1.triggered.connect()
+        op2 = QAction("Start Tracking",self)
+        # op2.triggered.connect(self.ui_wrapper.ui.StartStop.setChecked(True))
+        op2.triggered.connect(lambda:self.toggle_detection(True))
+        # op2.triggered.connect(self.start_detection)
+        op3 = QAction("Stop Tracking",self)
+        # op2.triggered.connect(self.ui_wrapper.ui.StartStop.setChecked(False))
+        op3.triggered.connect(lambda:self.toggle_detection(False))
+        # op3.triggered.connect(self.stop_detection)
+        op4 = QAction("Quit",self)
+        # op4.triggered.connect()
+
+        self.trayMenu.addAction(op1)
+        self.trayMenu.addAction(op2)
+        self.trayMenu.addAction(op3)
+        self.trayMenu.addAction(op4)
+        
+        self.trayIco.setContextMenu(self.trayMenu)
+
         # Timer for updating frames
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
@@ -157,6 +185,7 @@ class MainWindow(QMainWindow):
         self.mousePressed.connect(self.handleMousePressed)
         self.mouseMoved.connect(self.handleMouseMoved)
         self.ui_wrapper.ui.StartStop.clicked.connect(self.toggle_detection)
+
     def handleMousePressed(self, globalPos):
         self.dragPos = globalPos - self.frameGeometry().topLeft()
 
@@ -165,11 +194,14 @@ class MainWindow(QMainWindow):
 
     def toggle_detection(self, checked):
         if checked:
+            self.ui_wrapper.ui.StartStop.setChecked(True)
             self.ui_wrapper.ui.StartStop.setText("Starting...")
             QCoreApplication.processEvents()
             self.start_detection()
 
         else:
+
+            self.ui_wrapper.ui.StartStop.setChecked(False) #Because calling toggle function from tray menu doesn't change button state
             self.ui_wrapper.ui.StartStop.setText("Start Tracking")
             self.stop_detection()
 
@@ -389,6 +421,8 @@ class Ui_Home(object):
         self.MainContent = QWidget(self.Central)
         self.MainContent.setGeometry(0, 36, 800, 569)
         self.MainContent.setObjectName("MainContent")
+
+        
 
         #///////// START/STOP  /////////
         self.StartStop = QPushButton(self.MainContent)
@@ -769,6 +803,7 @@ class Ui_Home(object):
 
     def minimize_window(self):
         self.MainContent.window().showMinimized()
+        # self.MainContent.window().hide()
 
     def closeWindow(self):
         self.MainContent.window().close()
