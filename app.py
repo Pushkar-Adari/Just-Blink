@@ -156,18 +156,16 @@ class MainWindow(QMainWindow):
         self.trayIco.setIcon(self.appIcon)
         self.trayIco.setVisible(True)
         self.trayMenu = QMenu(self)
-        op1 = QAction("Show/Hide",self)
-        # op1.triggered.connect()
+        self.trayMenu.setStyleSheet("QMenu{background-color:#2B2B2B;color:white;margin:5px;border-radius:50px;font-family: Poppins;width:150px;height:135px;padding-top:5px}")
+        op1 = QAction("Show app",self)
+        
+
         op2 = QAction("Start Tracking",self)
-        # op2.triggered.connect(self.ui_wrapper.ui.StartStop.setChecked(True))
         op2.triggered.connect(lambda:self.toggle_detection(True))
-        # op2.triggered.connect(self.start_detection)
         op3 = QAction("Stop Tracking",self)
-        # op2.triggered.connect(self.ui_wrapper.ui.StartStop.setChecked(False))
         op3.triggered.connect(lambda:self.toggle_detection(False))
-        # op3.triggered.connect(self.stop_detection)
+        
         op4 = QAction("Quit",self)
-        # op4.triggered.connect()
 
         self.trayMenu.addAction(op1)
         self.trayMenu.addAction(op2)
