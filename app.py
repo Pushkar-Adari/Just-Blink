@@ -156,16 +156,37 @@ class MainWindow(QMainWindow):
         self.trayIco.setIcon(self.appIcon)
         self.trayIco.setVisible(True)
         self.trayMenu = QMenu(self)
-        self.trayMenu.setStyleSheet("QMenu{background-color:#2B2B2B;color:white;margin:5px;border-radius:50px;font-family: Poppins;width:150px;height:135px;padding-top:5px}")
-        op1 = QAction("Show app",self)
+        self.trayMenu.setStyleSheet("""
+        QMenu{
+            background-color:transparent;
+            color:white;
+            border-radius:0px;
+            font-family: Poppins;
+            width:146px;
+            height:152px;
+        }
+        QMenu::item{
+            background-color:#000;
+            padding: 5px 20px;
+            border: 1px solid transparent;
+        }
+        QMenu::item:selected{
+            background-color: #4A4A4A;
+            border: 1px solid #888;
+        }
         
-
+        
+    """)        
+        op1 = QAction("Show app",self)
+        op1.triggered.connect(lambda:self.ui_wrapper.ui.MainContent.window().show())
         op2 = QAction("Start Tracking",self)
         op2.triggered.connect(lambda:self.toggle_detection(True))
         op3 = QAction("Stop Tracking",self)
         op3.triggered.connect(lambda:self.toggle_detection(False))
         
         op4 = QAction("Quit",self)
+        op4.triggered.connect(lambda:self.ui_wrapper.ui.MainContent.window().close())
+
 
         self.trayMenu.addAction(op1)
         self.trayMenu.addAction(op2)
@@ -804,7 +825,11 @@ class Ui_Home(object):
         # self.MainContent.window().hide()
 
     def closeWindow(self):
-        self.MainContent.window().close()
+        flag = self.settingconf.value("TrayToggle",True,type=bool)
+        if flag == True:
+            self.MainContent.window().hide()
+        else:
+            self.MainContent.window().close()
 
     
 
