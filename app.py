@@ -69,7 +69,7 @@ class MyMplCanvas(FigureCanvas):
         xticklabels = [day[0] for day in days]
         self.axes.set_xticklabels(xticklabels)
         yticks = [0, 5, 10, 15, 20, 25, 30]
-        yticks = ['' if tick == 0 else f'{int(tick)}' for tick in yticks]
+        yticks = ['' if tick == 0 else f'{int(tick)}' for tick in yticks] #Make space for 0 but hide it cuz ugly
         self.axes.set_yticklabels(yticks, ha='center')
         self.axes.set_xlim(-0.5, len(days) - 0.5)
         self.axes.set_ylim(0, 25)
@@ -183,7 +183,6 @@ class MainWindow(QMainWindow):
         op2.triggered.connect(lambda:self.toggle_detection(True))
         op3 = QAction("Stop Tracking",self)
         op3.triggered.connect(lambda:self.toggle_detection(False))
-        
         op4 = QAction("Quit",self)
         op4.triggered.connect(lambda:self.ui_wrapper.ui.MainContent.window().close())
 
@@ -217,9 +216,7 @@ class MainWindow(QMainWindow):
             self.ui_wrapper.ui.StartStop.setText("Starting...")
             QCoreApplication.processEvents()
             self.start_detection()
-
         else:
-
             self.ui_wrapper.ui.StartStop.setChecked(False) #Because calling toggle function from tray menu doesn't change button state
             self.ui_wrapper.ui.StartStop.setText("Start Tracking")
             self.stop_detection()
@@ -233,7 +230,7 @@ class MainWindow(QMainWindow):
         self.timer.start(30)  # Update frame every 30 ms
         self.ui_wrapper.ui.StartStop.setText("Stop Tracking")
         start_reminder = notification.notify(
-            title = 'None',
+            title = '',
             message = 'Just Blink has started Tracking',
             app_icon = None,
             timeout = 10,
@@ -372,9 +369,16 @@ class MainWindow(QMainWindow):
             writer.writeheader()
             writer.writerows(entries)
     def stop_detection(self):
-
+        
         self.timer.stop()
         self.cap.release()
+        notification.notify(
+            title = '',
+            message = 'Just Blink has stopped Tracking',
+            app_icon = None,
+            timeout = 10,
+            toast = False
+        )
         self.save_blinks_to_csv()
 
 
@@ -772,7 +776,7 @@ class Ui_Home(object):
 
     def sendWorkNotif(self):
          notification.notify(
-                    title = 'None',
+                    title = 'Pomodoro',
                     message = "Looks like You've been working hard. Time for a break",
                     app_icon = None,
                     timeout = 10,
@@ -787,7 +791,7 @@ class Ui_Home(object):
         if self.min10actual <= 0:
             self.reset_timer()
             break_over = notification.notify(
-                title = 'None',
+                title = 'Pomodoro',
                 message = 'Feeling productive?. Time to start another session.',
                 app_icon = None,
                 timeout = 10,
