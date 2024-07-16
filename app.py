@@ -474,15 +474,6 @@ class Ui_Home(object):
         self.Logo.setStyleSheet("color:white;background-color: rgba(255, 255, 255, 0);")
         self.Logo.setObjectName("Logo")
 
-        #///////// PROFILE /////////
-        # self.Profile = QToolButton(self.MainContent)
-        # self.Profile.setGeometry(677, 33, 43, 43)
-        # self.Profile.setStyleSheet("background-color: rgb(19, 19, 19);border-radius:21px;icon-size:25px;")
-        # icon = QIcon()
-        # icon.addPixmap(QtGui.QPixmap(":/newPrefix/assets/user.png"), QIcon.Normal, QIcon.Off)
-        # self.Profile.setIcon(icon)
-        # self.Profile.setObjectName("Profile")
-        # self.Profile.setCursor(QCursor(Qt.PointingHandCursor))
 
         #///////// SETTINGS /////////
         self.Setting = QToolButton(self.MainContent)
@@ -664,7 +655,7 @@ class Ui_Home(object):
         font.setItalic(False)
         self.min10label.setFont(font)
         self.min10label.setStyleSheet("QLabel{color:white;}")
-        self.min10label.setText(self.settingconf.value("min10label"),"10m00s")
+        self.min10label.setText(self.settingconf.value("min10label","10m00s"))
         self.min10label.setAlignment(Qt.AlignCenter)
 
         self.min50 = QProgressBar(self.MainContent)
@@ -691,11 +682,10 @@ class Ui_Home(object):
         font.setItalic(False)
         self.min50label.setFont(font)
         self.min50label.setStyleSheet("QLabel{color:white;}")
-        self.min50label.setText(self.settingconf.value("min50label"),"50m00s")
+        self.min50label.setText(self.settingconf.value("min50label","50m00s"))
         self.min50label.setAlignment(Qt.AlignCenter)
 
         self.Background.raise_()
-        # self.Name.raise_()
         self.StartStop.raise_()
         self.Logo.raise_()
         self.Setting.raise_()
@@ -705,7 +695,6 @@ class Ui_Home(object):
         self.TimerLabel.raise_()
         self.Pause.raise_()
         self.Reset.raise_()
-        # self.Profile.raise_()
         self.min10.raise_()
         self.min50.raise_()
         self.min10label.raise_()
@@ -738,7 +727,6 @@ class Ui_Home(object):
         Home.setWindowTitle(_translate("Home", "Just Blink"))
 
         self.Logo.setText(_translate("Home", "Just Blink"))
-        # self.Profile.setText(_translate("Home", "..."))
         self.Setting.setText(_translate("Home", "..."))
         self.AverageHeading.setText(_translate("Home", "Average Blinks:"))
         self.AvgBlinksPerMinute.setText(_translate("Home", "Not active"))
