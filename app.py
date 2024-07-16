@@ -392,8 +392,8 @@ class Ui_Home(object):
         self.Home = Home
         self.settingconf = QSettings("JustBlink")
         #///////// VALUES ///////
-        self.min50total = int(self.settingconf.value("min50total"))
-        self.min10total = int(self.settingconf.value("min10total"))
+        self.min50total = int(self.settingconf.value("min50total",3000))
+        self.min10total = int(self.settingconf.value("min10total",600))
 
 
         self.min10actual = self.min10total
