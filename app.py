@@ -664,7 +664,7 @@ class Ui_Home(object):
         font.setItalic(False)
         self.min10label.setFont(font)
         self.min10label.setStyleSheet("QLabel{color:white;}")
-        self.min10label.setText(self.settingconf.value("min10label"))
+        self.min10label.setText(self.settingconf.value("min10label"),"10m00s")
         self.min10label.setAlignment(Qt.AlignCenter)
 
         self.min50 = QProgressBar(self.MainContent)
@@ -691,7 +691,7 @@ class Ui_Home(object):
         font.setItalic(False)
         self.min50label.setFont(font)
         self.min50label.setStyleSheet("QLabel{color:white;}")
-        self.min50label.setText(self.settingconf.value("min50label"))
+        self.min50label.setText(self.settingconf.value("min50label"),"50m00s")
         self.min50label.setAlignment(Qt.AlignCenter)
 
         self.Background.raise_()
