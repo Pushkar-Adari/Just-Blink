@@ -1,7 +1,7 @@
 <div class="header" align="center">
     <h1 align="center">Just Blink</h1>
     <br><br>    
-    <img align="center" src="![justblink logo](https://github.com/user-attachments/assets/f8e677a2-c6ff-4cf2-b0cd-012baae44745)
+    <img align="center" src="C:\Users\mihit\Downloads\justblink logo.png
 " align="center" width="50%" />
     <br><br>
 </div>
