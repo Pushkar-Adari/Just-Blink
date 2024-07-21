@@ -1,12 +1,8 @@
 <div class="header" align="center">
     <h1 align="center">Just Blink</h1>
     <br><br>    
-    <img align="center" src="C:\Users\mihit\Downloads\justblink logo.png
-" align="center" width="50%" />
-    <br><br>
+
 </div>
-
-
 
 • Just Blink is an Open-Source application that uses OpenCV to keep track of Blinks and runs on PyQt5 GUI.
 
