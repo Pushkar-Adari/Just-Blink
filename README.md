@@ -1,3 +1,9 @@
+<div class="header" align="center">
+    <h1 align="center">Just Blink</h1>
+    <br><br>    
+
+</div>
+
 • Just Blink is an Open-Source application that uses OpenCV to keep track of Blinks and runs on PyQt5 GUI.
 
 • It notes the average blinks and notifies the user to blink more often if the average is low, doing so results in reduced eye strain. 
