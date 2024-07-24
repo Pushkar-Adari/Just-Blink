@@ -16,9 +16,9 @@ Aside from that Just Blink includes a Pomodoro Timer with customizable session l
 
 ![Screenshot 2024-07-24 180857](https://github.com/user-attachments/assets/16ff19c5-f96b-474b-815c-fb1f74cebcd3)
 
-Just Blink allows for customization to every aspect of the app's functionality<br><br>
-Want the app to load with windows? You have the option to do that<br><br>
-Want to declutter your Taskbar and hide the app in tray? That's possible too<br><br>
-Is the detection not properly calibrated? Change sensitivity in settings<br><br>
-Don't want frequent notifications? Increase the minimum interval<br><br>
-Is the conventional 30 minute pomodoro session too short? Switch it to 60 Minutes.<br><br>
+<h3>Just Blink allows for customization to every aspect of the app's functionality</h3><br>
+<b>Want the app to load with windows?</b> You have the option to do that<br>
+<b>Want to declutter your Taskbar and hide the app in tray?</b> That's possible too<br>
+<b>Is the detection not properly calibrated?</b> Change sensitivity in settings<br>
+<b>Don't want frequent notifications?</b> Increase the minimum interval<br>
+<b>Is the conventional 30 minute pomodoro session too short?</b> Switch it to 60 Minutes.<br>
