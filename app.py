@@ -381,6 +381,7 @@ class MainWindow(QMainWindow):
             app_icon = None,
             timeout = 10,
             toast = False
+            
         )
         self.save_blinks_to_csv()
         self.avg_blinks_per_min = 16
