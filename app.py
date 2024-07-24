@@ -31,6 +31,9 @@ class MyMplCanvas(FigureCanvas):
         self.ui_wrapper = Ui_HomeWrapper(self)  
         self.plot()
     def createCSV(self,file_path):
+        directory = os.path.dirname(file_path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         if not os.path.exists(file_path):
             with open(file_path, 'w', newline='') as file:
                 fieldnames = ['date', 'day', 'average_blinks']
@@ -330,7 +333,7 @@ class MainWindow(QMainWindow):
             try:
                 if self.avg_blinks_per_min <= 15:
                     notification.notify(
-                    title = 'None',
+                    title = '',
                     message = "You haven't blinked in a while!",
                     app_icon = None,
                     timeout = 10,
@@ -380,6 +383,7 @@ class MainWindow(QMainWindow):
             toast = False
         )
         self.save_blinks_to_csv()
+        self.avg_blinks_per_min = 16
 
 
 
@@ -794,8 +798,8 @@ class Ui_Home(object):
         self.min10actual = self.min10total
         self.min10.setValue(self.min10actual)
         self.Pause.setChecked(False)
-        self.min50label.setText(self.settingconf.value("min50label"))
-        self.min10label.setText(self.settingconf.value("min10label"))
+        self.min50label.setText(self.settingconf.value("min50label","50m00s"))
+        self.min10label.setText(self.settingconf.value("min10label","10m00s"))
         
 
     def update_min50_time(self):
