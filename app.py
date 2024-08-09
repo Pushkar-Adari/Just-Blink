@@ -194,7 +194,7 @@ class MainWindow(QMainWindow):
         
         #System tray Menu
 
-        self.appIcon = QIcon("assets/logos/48x48.ico")
+        self.appIcon = QIcon(":/newPrefix/assets/logos/icon.ico")
         self.trayIco = QSystemTrayIcon(self)
         self.trayIco.setIcon(self.appIcon)
         self.trayIco.setVisible(True)
@@ -228,6 +228,7 @@ class MainWindow(QMainWindow):
         op3.triggered.connect(lambda:self.toggle_detection(False))
         op4 = QAction("Quit",self)
         op4.triggered.connect(lambda:self.ui_wrapper.ui.MainContent.window().close())
+
 
 
         self.trayMenu.addAction(op1)
@@ -275,7 +276,8 @@ class MainWindow(QMainWindow):
         start_reminder = notification.notify(
             title = '',
             message = 'Just Blink has started Tracking',
-            app_icon = None,
+            app_name = "Just Blink",
+            app_icon = "Assets/icon.ico",
             timeout = 10,
             toast = False
         )
@@ -375,7 +377,8 @@ class MainWindow(QMainWindow):
                     notification.notify(
                     title = '',
                     message = "You haven't blinked in a while!",
-                    app_icon = None,
+                    app_name = "Just Blink",
+                    app_icon = "Assets/icon.ico",
                     timeout = 10,
                     toast = False
                     )
@@ -418,7 +421,8 @@ class MainWindow(QMainWindow):
         notification.notify(
             title = '',
             message = 'Just Blink has stopped Tracking',
-            app_icon = None,
+            app_name = "Just Blink",
+            app_icon = "Assets/icon.ico",
             timeout = 10,
             toast = False
             
@@ -445,6 +449,7 @@ class Ui_Home(object):
         self.min50actual = self.min50total
 
         #///////// HOME /////////
+
         Home.setObjectName("Home")
         Home.setFixedSize(800, 605)
         Home.setAutoFillBackground(False)
@@ -811,7 +816,8 @@ class Ui_Home(object):
          notification.notify(
                     title = 'Pomodoro',
                     message = "Looks like You've been working hard. Time for a break",
-                    app_icon = None,
+                    apapp_name = "Just Blink",
+                    app_icon = "Assets/icon.ico",
                     timeout = 10,
                     toast = False
                 )
@@ -826,7 +832,8 @@ class Ui_Home(object):
             break_over = notification.notify(
                 title = 'Pomodoro',
                 message = 'Feeling productive?. Time to start another session.',
-                app_icon = None,
+                app_name = "Just Blink",
+                app_icon = "Assets/icon.ico",
                 timeout = 10,
                 toast = False
             )
@@ -1126,5 +1133,6 @@ class Ui_Home(object):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
+    window.setWindowIcon(QIcon(":/newPrefix/assets/logos/icon.ico"))
     window.show()
     sys.exit(app.exec_())

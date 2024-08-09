@@ -12,5 +12,6 @@
         <file>b2.png</file>
         <file>assets/info.png</file>
         <file>theme.mplstyle</file>
+        <file>assets/logos/icon.ico</file>
     </qresource>
 </RCC>
