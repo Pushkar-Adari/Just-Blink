@@ -1,13 +1,14 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtTest import QTest
-from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings, QFile, QIODevice
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget, QSlider, QSystemTrayIcon, QMenu, QAction
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from qtwidgets import AnimatedToggle
 from plyer import notification
+from cycler import cycler
 import os
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
@@ -18,12 +19,51 @@ import cvzone
 import csv
 from cvzone.FaceMeshModule import FaceMeshDetector
 import numpy as np
-import rc_rc
+import tempfile
+
+import rc
+
 import threading
+
 
 class MyMplCanvas(FigureCanvas):
     def __init__(self, parent=None):
-        plt.style.use('theme.mplstyle')
+        
+        plt.rcParams.update({
+            'patch.linewidth': 0.5,
+            'patch.facecolor': '#348ABD',
+            'patch.edgecolor': '#EEEEEE',
+            'patch.antialiased': True,
+            'font.size': 10.0,
+            'axes.facecolor': 'none',
+            'axes.edgecolor': 'white',
+            'axes.linewidth': 2,
+            'axes.grid': True,
+            'axes.titlesize': 'x-large',
+            'axes.labelsize': 'large',
+            'axes.labelcolor': '#555555',
+            'axes.axisbelow': True,
+            'axes.prop_cycle': cycler('color', ['#E24A33', '#348ABD', '#988ED5', '#777777', '#FBC15E', '#8EBA42', '#FFB5B8']),
+            'xtick.color': '#ffffff',
+            'xtick.direction': 'out',
+            'ytick.color': '#ffffff',
+            'ytick.direction': 'out',
+            'xtick.major.size': 0,
+            'ytick.major.size': 0,
+            'xtick.minor.size': 0,
+            'ytick.minor.size': 0,
+            'xtick.major.pad': 10.0,
+            'ytick.major.pad': 10.0,
+            'text.color': 'white',
+            'axes.grid.axis': 'y',
+            'grid.color': '#3F3F3F',
+            'grid.linestyle': '-',
+            'grid.linewidth': 0.5,
+            'axes.spines.right': False,
+            'axes.spines.top': False,
+            'figure.facecolor': 'none',
+            'figure.edgecolor': '0.50'
+        })
         fig = Figure()
         self.axes = fig.add_subplot(111)
         super(MyMplCanvas, self).__init__(fig)
