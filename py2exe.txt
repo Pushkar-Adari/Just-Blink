@@ -1,1 +1,0 @@
-pyinstaller --noconfirm --onefile --windowed --icon "E:\JBCopy\Just-Blink\assets\logos\128x128.ico" --add-data "E:\JBCopy\Just-Blink\rc.py;." --add-data "E:\JBCopy\Just-Blink\.venv\Lib\site-packages\mediapipe;mediapipe/" --hidden-import "mediapipe" --hidden-import "cvzone"  "E:\JBCopy\Just-Blink\app.py"
