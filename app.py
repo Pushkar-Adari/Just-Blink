@@ -816,7 +816,7 @@ class Ui_Home(object):
          notification.notify(
                     title = 'Pomodoro',
                     message = "Looks like You've been working hard. Time for a break",
-                    apapp_name = "Just Blink",
+                    app_name = "Just Blink",
                     app_icon = "Assets/icon.ico",
                     timeout = 10,
                     toast = False
@@ -1131,8 +1131,10 @@ class Ui_Home(object):
         self.settings_dialog.exec_()
 
 if __name__ == "__main__":
+    
     app = QApplication(sys.argv)
     window = MainWindow()
     window.setWindowIcon(QIcon(":/newPrefix/assets/logos/icon.ico"))
     window.show()
     sys.exit(app.exec_())
+    
