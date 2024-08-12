@@ -4,4 +4,14 @@ bfg-1.14.9.jar
 output/
 output.rar
 logs/
+assets/
+app.ui
+b2.png
+bfg-1.14.0.jar
+final.json
+py2exe.json
+py2exeTest.json
+m.py
+py2exe.txt
+rc.qrc
 Just-Blink.code-workspace

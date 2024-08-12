@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtTest import QTest
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings, QFile, QIODevice
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget, QSlider, QSystemTrayIcon, QMenu, QAction
-from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont
+from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont, QFontDatabase
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from qtwidgets import AnimatedToggle
@@ -443,10 +443,46 @@ class Ui_Home(object):
         #///////// VALUES ///////
         self.min50total = int(self.settingconf.value("min50total",3000))
         self.min10total = int(self.settingconf.value("min10total",600))
-
-
         self.min10actual = self.min10total
         self.min50actual = self.min50total
+        #///////// FONT /////////
+
+        self.r_font_id = QFontDatabase.addApplicationFont(":/newPrefix/assets/fonts/Poppins-Regular.ttf")
+        self.light_font_id = QFontDatabase.addApplicationFont(":/newPrefix/assets/fonts/Poppins-Light.ttf")
+        self.sb_font_id = QFontDatabase.addApplicationFont(":/newPrefix/assets/fonts/Poppins-SemiBold.ttf")
+
+        if self.r_font_id != -1:
+            families = QFontDatabase.applicationFontFamilies(self.r_font_id)
+            if "Poppins" in families:
+                self.regular_font_family = "Poppins"
+            else:
+                print(f"Error: Unable to find Poppins font family in Regular font file")
+                self.regular_font_family = "Arial"
+        else:
+            print("Error: Unable to load Poppins-Regular.ttf font file")
+            self.regular_font_family = "Arial"
+
+        if self.light_font_id != -1:
+            families = QFontDatabase.applicationFontFamilies(self.light_font_id)
+            if "Poppins Light" in families:
+                self.light_font_family = "Poppins Light"
+            else:
+                print(f"Error: Unable to find Poppins Light font family in Light font file")
+                self.light_font_family = "Arial"
+        else:
+            print("Error: Unable to load Poppins-Light.ttf font file")
+            self.light_font_family = "Arial"
+
+        if self.sb_font_id != -1:
+            families = QFontDatabase.applicationFontFamilies(self.sb_font_id)
+            if "Poppins SemiBold" in families:
+                self.sb_font_family = "Poppins SemiBold"
+            else:
+                print(f"Error: Unable to find Poppins SemiBold font family in SemiBold font file")
+                self.sb_font_family = "Arial"
+        else:
+            print("Error: Unable to load Poppins-SemiBold.ttf font file")
+            self.sb_font_family = "Arial"
 
         #///////// HOME /////////
 
@@ -482,7 +518,7 @@ class Ui_Home(object):
         self.titlelabel = QLabel(self.TitleBar)
         self.titlelabel.setGeometry(321, 0, 159, 36)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(10)
         font.setItalic(False)
         self.titlelabel.setFont(font)
@@ -502,7 +538,7 @@ class Ui_Home(object):
         self.StartStop.setEnabled(True)
         self.StartStop.setGeometry(502, 355, 267, 82)
         font = QFont()
-        font.setFamily("Poppins SemiBold")
+        font.setFamily(self.sb_font_family)
         font.setPointSize(15)
         font.setItalic(False)
         self.StartStop.setFont(font)
@@ -516,7 +552,7 @@ class Ui_Home(object):
         self.Logo = QLabel(self.MainContent)
         self.Logo.setGeometry(50, 28, 207, 55)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(24)
         font.setBold(True)
         font.setItalic(False)
@@ -547,7 +583,7 @@ class Ui_Home(object):
         self.AverageHeading = QLabel(self.Avg)
         self.AverageHeading.setGeometry(0, 0, 263, 61)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(14)
         font.setItalic(True)
         self.AverageHeading.setFont(font)
@@ -559,7 +595,7 @@ class Ui_Home(object):
         self.AvgBlinksPerMinute = QLabel(self.Avg)
         self.AvgBlinksPerMinute.setGeometry(0, 50, 263, 41)
         font = QFont()
-        font.setFamily("Poppins SemiBold")
+        font.setFamily(self.sb_font_family)
         font.setPointSize(16)
         self.AvgBlinksPerMinute.setFont(font)
         self.AvgBlinksPerMinute.setStyleSheet("background-color: rgba(255, 255, 255, 0);color:white;")
@@ -577,7 +613,7 @@ class Ui_Home(object):
         self.weekHeading = QLabel(self.Week)
         self.weekHeading.setGeometry(0, 0, 263, 61)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(14)
         font.setItalic(True)
         self.weekHeading.setFont(font)
@@ -588,7 +624,7 @@ class Ui_Home(object):
         self.weeklyGrowth = QLabel(self.Week)
         self.weeklyGrowth.setGeometry(0, 50, 263, 41)
         font = QFont()
-        font.setFamily("Poppins SemiBold")
+        font.setFamily(self.sb_font_family)
         font.setPointSize(16)
         font.setItalic(False)
         self.weeklyGrowth.setFont(font)
@@ -608,7 +644,7 @@ class Ui_Home(object):
         self.TimerLabel = QLabel(self.MainContent)
         self.TimerLabel.setGeometry(43, 450, 210, 44)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(15)
         font.setBold(True)
         font.setItalic(False)
@@ -633,7 +669,7 @@ class Ui_Home(object):
         self.PomodoroInfoText = QLabel(self.MainContent)
         self.PomodoroInfoText.setGeometry(280, 417, 275, 80)
         font = QFont()
-        font.setFamily("Poppins Light")
+        font.setFamily(self.light_font_family)
         font.setBold(False)
         font.setItalic(False)
         self.PomodoroInfoText.setFont(font)
@@ -700,7 +736,7 @@ class Ui_Home(object):
         self.min10label = QLabel(self.MainContent)
         self.min10label.setGeometry(32, 498, 106, 43)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(9)
         font.setItalic(False)
         self.min10label.setFont(font)
@@ -727,7 +763,7 @@ class Ui_Home(object):
         self.min50label = QLabel(self.MainContent)
         self.min50label.setGeometry(143, 498, 530, 43)
         font = QFont()
-        font.setFamily("Poppins")
+        font.setFamily(self.regular_font_family)
         font.setPointSize(9)
         font.setItalic(False)
         self.min50label.setFont(font)
@@ -899,17 +935,17 @@ class Ui_Home(object):
         self.STitleLabel = QLabel(self.settings_dialog)
         self.STitleLabel.setGeometry(220,0,159,36)
         bfont = QFont()
-        bfont.setFamily("Poppins")
+        bfont.setFamily(self.regular_font_family)
         bfont.setPointSize(10)
         bfont.setItalic(False)
         self.STitleLabel.setFont(bfont)
         hfont = QFont()
-        hfont.setFamily("Poppins")
+        hfont.setFamily(self.regular_font_family)
         hfont.setPointSize(10)
         hfont.setItalic(False)
         hfont.setBold(True)
         lfont = QFont()
-        lfont.setFamily("Poppins Light")
+        lfont.setFamily(self.light_font_family)
         lfont.setPointSize(9)
         lfont.setItalic(True)
         self.STitleLabel.setFont(bfont)
