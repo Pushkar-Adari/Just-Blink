@@ -2,9 +2,7 @@
 
 Just Blink is a desktop application designed to help users reduce digital eye strain by monitoring their blink rates. The app uses computer vision to track blinks and sends notifications when the blink rate falls below a healthy threshold. Additionally, the app provides session usage reports displayed on a dashboard, helping users maintain healthier screen habits.
 
-<div align="center">
 [![Watch the intro video](https://img.youtube.com/vi/xJWYBKFWrCo/0.jpg)](https://youtu.be/xJWYBKFWrCo)
-</div>
 
 ## Features
 
