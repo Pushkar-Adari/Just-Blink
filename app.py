@@ -1,7 +1,7 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtTest import QTest
-from PyQt5.QtCore import Qt, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings, QFile, QIODevice
+from PyQt5.QtCore import Qt,QSharedMemory, QPoint, pyqtSignal, QObject, QTimer, QElapsedTimer, QCoreApplication, QSettings, QFile, QIODevice
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout,QDialog, QLabel, QFrame, QPushButton, QToolButton, QProgressBar, QWidget, QSlider, QSystemTrayIcon, QMenu, QAction
 from PyQt5.QtGui import QBitmap, QPainter, QCursor, QIcon, QFont, QFontDatabase
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -247,7 +247,14 @@ class MainWindow(QMainWindow):
         self.mousePressed.connect(self.handleMousePressed)
         self.mouseMoved.connect(self.handleMouseMoved)
         self.ui_wrapper.ui.StartStop.clicked.connect(self.toggle_detection)
-
+    def checkInstance(self):
+        memory = QSharedMemory("JustBlinkInstanceCheck")
+        if memory.attach():
+            return False
+        else:
+            if not memory.create(1):
+                return False 
+            return True
     def handleMousePressed(self, globalPos):
         self.dragPos = globalPos - self.frameGeometry().topLeft()
 
@@ -519,7 +526,7 @@ class Ui_Home(object):
         self.titlelabel.setGeometry(321, 0, 159, 36)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(10)
+        font.setPixelSize(16)
         font.setItalic(False)
         self.titlelabel.setFont(font)
         self.titlelabel.setStyleSheet("QLabel{color:white;}")
@@ -539,11 +546,11 @@ class Ui_Home(object):
         self.StartStop.setGeometry(502, 355, 267, 82)
         font = QFont()
         font.setFamily(self.sb_font_family)
-        font.setPointSize(15)
+        font.setPixelSize(24)
         font.setItalic(False)
         self.StartStop.setFont(font)
         self.StartStop.setContextMenuPolicy(Qt.DefaultContextMenu)
-        self.StartStop.setStyleSheet("QPushButton{background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:0 rgba(1, 173, 59, 0.3),stop:1 rgba(1, 50, 32, 0.3));border-radius:20;color: rgb(10,255,35);font: 63 14.5pt \"Poppins SemiBold\";}QPushButton:checked{background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:0 rgba(64, 16, 16, 0.3),stop:1 rgba(184, 19, 19, 0.3));border-radius:20;color: rgb(249,35,35);font: 63 14.5pt \"Poppins SemiBold\";}")
+        self.StartStop.setStyleSheet("QPushButton{background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:0 rgba(1, 173, 59, 0.3),stop:1 rgba(1, 50, 32, 0.3));border-radius:20;color: rgb(10,255,35);font: 63 24px \"Poppins SemiBold\";}QPushButton:checked{background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:0 rgba(64, 16, 16, 0.3),stop:1 rgba(184, 19, 19, 0.3));border-radius:20;color: rgb(249,35,35);font: 63 24px \"Poppins SemiBold\";}")
         self.StartStop.setCheckable(True)
         self.StartStop.setChecked(False)
         self.StartStop.setObjectName("StartStop")
@@ -553,7 +560,7 @@ class Ui_Home(object):
         self.Logo.setGeometry(50, 28, 207, 55)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(24)
+        font.setPixelSize(40)
         font.setBold(True)
         font.setItalic(False)
         self.Logo.setFont(font)
@@ -584,7 +591,7 @@ class Ui_Home(object):
         self.AverageHeading.setGeometry(0, 0, 263, 61)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(14)
+        font.setPixelSize(24)
         font.setItalic(True)
         self.AverageHeading.setFont(font)
         self.AverageHeading.setAutoFillBackground(False)
@@ -596,7 +603,7 @@ class Ui_Home(object):
         self.AvgBlinksPerMinute.setGeometry(0, 50, 263, 41)
         font = QFont()
         font.setFamily(self.sb_font_family)
-        font.setPointSize(16)
+        font.setPixelSize(27)
         self.AvgBlinksPerMinute.setFont(font)
         self.AvgBlinksPerMinute.setStyleSheet("background-color: rgba(255, 255, 255, 0);color:white;")
         self.AvgBlinksPerMinute.setAlignment(Qt.AlignCenter)
@@ -614,7 +621,7 @@ class Ui_Home(object):
         self.weekHeading.setGeometry(0, 0, 263, 61)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(14)
+        font.setPixelSize(24)
         font.setItalic(True)
         self.weekHeading.setFont(font)
         self.weekHeading.setStyleSheet("background-color: rgba(0,0,0,0);color:white;")
@@ -625,7 +632,7 @@ class Ui_Home(object):
         self.weeklyGrowth.setGeometry(0, 50, 263, 41)
         font = QFont()
         font.setFamily(self.sb_font_family)
-        font.setPointSize(16)
+        font.setPixelSize(27)
         font.setItalic(False)
         self.weeklyGrowth.setFont(font)
         self.weeklyGrowth.setStyleSheet("background-color: rgba(0,0,0,0);color:#00FF1A;")
@@ -645,11 +652,11 @@ class Ui_Home(object):
         self.TimerLabel.setGeometry(43, 450, 210, 44)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(15)
+        font.setPixelSize(25)
         font.setBold(True)
         font.setItalic(False)
         self.TimerLabel.setFont(font)
-        self.TimerLabel.setStyleSheet("color:white;font-size: 14.5pt;background-color: rgba(0, 0, 0, 0);")
+        self.TimerLabel.setStyleSheet("color:white;font-size: 24px;background-color: rgba(0, 0, 0, 0);")
         self.TimerLabel.setFrameShape(QFrame.NoFrame)
         self.TimerLabel.setFrameShadow(QFrame.Plain)
         self.TimerLabel.setWordWrap(False)
@@ -673,7 +680,7 @@ class Ui_Home(object):
         font.setBold(False)
         font.setItalic(False)
         self.PomodoroInfoText.setFont(font)
-        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: rgba(0,0,0,0);border-radius:14px;")
+        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 14px;background-color: rgba(0,0,0,0);border-radius:14px;")
         self.PomodoroInfoText.setFrameShape(QFrame.NoFrame)
         self.PomodoroInfoText.setFrameShadow(QFrame.Plain)
         self.PomodoroInfoText.setWordWrap(True)
@@ -737,7 +744,7 @@ class Ui_Home(object):
         self.min10label.setGeometry(32, 498, 106, 43)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(9)
+        font.setPixelSize(15)
         font.setItalic(False)
         self.min10label.setFont(font)
         self.min10label.setStyleSheet("QLabel{color:white;}")
@@ -764,7 +771,7 @@ class Ui_Home(object):
         self.min50label.setGeometry(143, 498, 530, 43)
         font = QFont()
         font.setFamily(self.regular_font_family)
-        font.setPointSize(9)
+        font.setPixelSize(15)
         font.setItalic(False)
         self.min50label.setFont(font)
         self.min50label.setStyleSheet("QLabel{color:white;}")
@@ -800,11 +807,11 @@ class Ui_Home(object):
     def showPInfo(self,event):
         time.sleep(0.3)
         self.PomodoroInfoText.setText('Divide your work into intervals with breaks to boost productivity.\nChange session length in settings.')
-        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: #181818;border-radius:14px;text-align: center;padding:5px;")
+        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 14px;background-color: #181818;border-radius:14px;text-align: center;padding:5px;")
 
     def hidePInfo(self,event):
         self.PomodoroInfoText.setText('')
-        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 8.5pt;background-color: rgba(0,0,0,0);border-radius:14px;")
+        self.PomodoroInfoText.setStyleSheet("color:white;font-size: 14px;background-color: rgba(0,0,0,0);border-radius:14px;")
 
 
 
@@ -936,17 +943,17 @@ class Ui_Home(object):
         self.STitleLabel.setGeometry(220,0,159,36)
         bfont = QFont()
         bfont.setFamily(self.regular_font_family)
-        bfont.setPointSize(10)
+        bfont.setPixelSize(17)
         bfont.setItalic(False)
         self.STitleLabel.setFont(bfont)
         hfont = QFont()
         hfont.setFamily(self.regular_font_family)
-        hfont.setPointSize(10)
+        hfont.setPixelSize(17)
         hfont.setItalic(False)
         hfont.setBold(True)
         lfont = QFont()
         lfont.setFamily(self.light_font_family)
-        lfont.setPointSize(9)
+        lfont.setPixelSize(15)
         lfont.setItalic(True)
         self.STitleLabel.setFont(bfont)
         self.STitleLabel.setStyleSheet("QLabel{color:white;}")
@@ -1165,11 +1172,14 @@ class Ui_Home(object):
         self.EndText.setText('Built using <a href="https://www.qt.io" style = "text-decoration:underline;color:white;">Qt</a>. Icons by <a href="https://icons8.com" style = "text-decoration:underline;color:white;">Icons8</a>')
 
         self.settings_dialog.exec_()
-
+    
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
     window = MainWindow()
+    if not window.checkInstance():
+        print("App is already running.")
+        sys.exit(0)
     window.setWindowIcon(QIcon(":/newPrefix/assets/logos/icon.ico"))
     window.show()
     sys.exit(app.exec_())

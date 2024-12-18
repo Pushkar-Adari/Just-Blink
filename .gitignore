@@ -11,6 +11,7 @@ bfg-1.14.0.jar
 final.json
 py2exe.json
 py2exeTest.json
+dpr.py
 m.py
 py2exe.txt
 rc.qrc
