@@ -5,6 +5,7 @@ Just Blink is a desktop application designed to help users reduce digital eye st
 <div align="center">
 [![Watch the intro video](https://img.youtube.com/vi/xJWYBKFWrCo/0.jpg)](https://youtu.be/xJWYBKFWrCo)
 </div>
+
 ## Features
 
 - Blink Detection: Tracks the user's blink rate in real-time using OpenCV.
